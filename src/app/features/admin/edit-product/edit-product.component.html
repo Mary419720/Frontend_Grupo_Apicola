@@ -1,0 +1,78 @@
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-content">
+    <h2>Editar Presentación</h2>
+    
+    <form *ngIf="editablePresentation" (ngSubmit)="onSave()" #editForm="ngForm">
+      <div class="form-grid">
+        <!-- Columna 1 -->
+        <div class="form-column">
+          <div class="form-group">
+            <label for="sku">SKU</label>
+            <input type="text" id="sku" name="sku" [(ngModel)]="editablePresentation.sku" required>
+          </div>
+          <div class="form-group">
+            <label for="formato">Formato</label>
+            <input type="text" id="formato" name="formato" [(ngModel)]="editablePresentation.formato">
+          </div>
+          <div class="form-group">
+            <label for="capacidad">Capacidad</label>
+            <input type="text" id="capacidad" name="capacidad" [(ngModel)]="editablePresentation.capacidad">
+          </div>
+          <div class="form-group">
+            <label for="precio_venta">Precio Venta</label>
+            <input type="number" id="precio_venta" name="precio_venta" [(ngModel)]="editablePresentation.precio_venta">
+          </div>
+           <div class="form-group">
+            <label for="precio_compra">Precio Compra</label>
+            <input type="number" id="precio_compra" name="precio_compra" [(ngModel)]="editablePresentation.precio_compra">
+          </div>
+        </div>
+
+        <!-- Columna 2 -->
+        <div class="form-column">
+          <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" name="stock" [(ngModel)]="editablePresentation.stock">
+          </div>
+          <div class="form-group">
+            <label for="stock_minimo">Stock Mínimo</label>
+            <input type="number" id="stock_minimo" name="stock_minimo" [(ngModel)]="editablePresentation.stock_minimo">
+          </div>
+          <div class="form-group">
+            <label for="lote">Lote</label>
+            <input type="text" id="lote" name="lote" [(ngModel)]="editablePresentation.lote">
+          </div>
+          <div class="form-group">
+            <label for="fecha_ingreso">Fecha Ingreso</label>
+            <input type="date" id="fecha_ingreso" name="fecha_ingreso" [(ngModel)]="editablePresentation.fecha_ingreso">
+          </div>
+          <div class="form-group">
+            <label for="fecha_vencimiento">Fecha Vencimiento</label>
+            <input type="date" id="fecha_vencimiento" name="fecha_vencimiento" [(ngModel)]="editablePresentation.fecha_vencimiento">
+          </div>
+        </div>
+
+        <!-- Columna 3 -->
+        <div class="form-column">
+          <div class="form-group">
+            <label for="proveedor">Proveedor</label>
+            <input type="text" id="proveedor" name="proveedor" [(ngModel)]="editablePresentation.proveedor">
+          </div>
+          <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="editablePresentation.ubicacion">
+          </div>
+          <div class="form-group form-group-full">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" rows="4" [(ngModel)]="editablePresentation.observaciones"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="!editForm.valid">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

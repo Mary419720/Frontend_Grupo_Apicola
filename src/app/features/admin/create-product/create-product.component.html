@@ -1,0 +1,154 @@
+<div class="create-product-container">
+  <h2>Registrar Nuevo Producto</h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    
+    <fieldset class="product-details-fieldset">
+      <legend>Detalles del Producto</legend>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nombre">Nombre del Producto <span class="required">*</span></label>
+          <input id="nombre" formControlName="nombre" type="text">
+          <div *ngIf="productForm.get('nombre')?.invalid && (productForm.get('nombre')?.dirty || productForm.get('nombre')?.touched)" class="error-message">
+            El nombre es requerido.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="codigo">Código <span class="required">*</span></label>
+          <input id="codigo" formControlName="codigo" type="text">
+          <div *ngIf="productForm.get('codigo')?.invalid && (productForm.get('codigo')?.dirty || productForm.get('codigo')?.touched)" class="error-message">
+            El código es requerido.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo <span class="required">*</span></label>
+          <input id="tipo" formControlName="tipo" type="text">
+          <!-- Podría ser un select si los tipos son predefinidos -->
+          <div *ngIf="productForm.get('tipo')?.invalid && (productForm.get('tipo')?.dirty || productForm.get('tipo')?.touched)" class="error-message">
+            El tipo es requerido.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="categoria">Categoría <span class="required">*</span></label>
+          <input id="categoria" formControlName="categoria" type="text">
+          <!-- Podría ser un select -->
+          <div *ngIf="productForm.get('categoria')?.invalid && (productForm.get('categoria')?.dirty || productForm.get('categoria')?.touched)" class="error-message">
+            La categoría es requerida.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subcategoria">Subcategoría</label>
+          <input id="subcategoria" formControlName="subcategoria" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado <span class="required">*</span></label>
+          <select id="estado" formControlName="estado">
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+            <option value="Descontinuado">Descontinuado</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset formArrayName="presentaciones" class="presentations-fieldset">
+      <legend>Presentaciones</legend>
+      <div *ngFor="let presentationGroup of presentaciones.controls; let i=index" [formGroupName]="i" class="presentation-item">
+        <h4>Presentación {{ i + 1 }} 
+          <button type="button" (click)="removePresentation(i)" class="btn-remove-presentation" *ngIf="presentaciones.length > 1">Quitar</button>
+        </h4>
+        <div class="form-grid-presentation">
+          <div class="form-group">
+            <label for="sku-{{i}}">SKU <span class="required">*</span></label>
+            <input id="sku-{{i}}" formControlName="sku" type="text">
+            <div *ngIf="presentationGroup.get('sku')?.invalid && (presentationGroup.get('sku')?.dirty || presentationGroup.get('sku')?.touched)" class="error-message">
+              SKU es requerido.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="formato-{{i}}">Formato <span class="required">*</span></label>
+            <input id="formato-{{i}}" formControlName="formato" type="text">
+             <div *ngIf="presentationGroup.get('formato')?.invalid && (presentationGroup.get('formato')?.dirty || presentationGroup.get('formato')?.touched)" class="error-message">
+              Formato es requerido.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="capacidad-{{i}}">Capacidad <span class="required">*</span></label>
+            <input id="capacidad-{{i}}" formControlName="capacidad" type="text">
+            <div *ngIf="presentationGroup.get('capacidad')?.invalid && (presentationGroup.get('capacidad')?.dirty || presentationGroup.get('capacidad')?.touched)" class="error-message">
+              Capacidad es requerida.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="precio_venta-{{i}}">Precio Venta <span class="required">*</span></label>
+            <input id="precio_venta-{{i}}" formControlName="precio_venta" type="number" min="0">
+            <div *ngIf="presentationGroup.get('precio_venta')?.invalid && (presentationGroup.get('precio_venta')?.dirty || presentationGroup.get('precio_venta')?.touched)" class="error-message">
+              Precio de venta es requerido y debe ser positivo.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="precio_compra-{{i}}">Precio Compra <span class="required">*</span></label>
+            <input id="precio_compra-{{i}}" formControlName="precio_compra" type="number" min="0">
+            <div *ngIf="presentationGroup.get('precio_compra')?.invalid && (presentationGroup.get('precio_compra')?.dirty || presentationGroup.get('precio_compra')?.touched)" class="error-message">
+              Precio de compra es requerido y debe ser positivo.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="stock-{{i}}">Stock <span class="required">*</span></label>
+            <input id="stock-{{i}}" formControlName="stock" type="number" min="0">
+            <div *ngIf="presentationGroup.get('stock')?.invalid && (presentationGroup.get('stock')?.dirty || presentationGroup.get('stock')?.touched)" class="error-message">
+              Stock es requerido y debe ser positivo.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="stock_minimo-{{i}}">Stock Mínimo <span class="required">*</span></label>
+            <input id="stock_minimo-{{i}}" formControlName="stock_minimo" type="number" min="0">
+            <div *ngIf="presentationGroup.get('stock_minimo')?.invalid && (presentationGroup.get('stock_minimo')?.dirty || presentationGroup.get('stock_minimo')?.touched)" class="error-message">
+              Stock mínimo es requerido y debe ser positivo.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lote-{{i}}">Lote</label>
+            <input id="lote-{{i}}" formControlName="lote" type="text">
+          </div>
+          <div class="form-group">
+            <label for="fecha_ingreso-{{i}}">Fecha Ingreso</label>
+            <input id="fecha_ingreso-{{i}}" formControlName="fecha_ingreso" type="date">
+          </div>
+          <div class="form-group">
+            <label for="fecha_vencimiento-{{i}}">Fecha Vencimiento</label>
+            <input id="fecha_vencimiento-{{i}}" formControlName="fecha_vencimiento" type="date">
+          </div>
+          <div class="form-group">
+            <label for="proveedor-{{i}}">Proveedor</label>
+            <input id="proveedor-{{i}}" formControlName="proveedor" type="text">
+          </div>
+          <div class="form-group">
+            <label for="ubicacion-{{i}}">Ubicación</label>
+            <input id="ubicacion-{{i}}" formControlName="ubicacion" type="text">
+          </div>
+          <div class="form-group form-group-full-width">
+            <label for="observaciones-{{i}}">Observaciones</label>
+            <textarea id="observaciones-{{i}}" formControlName="observaciones" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <button type="button" (click)="addPresentation()" class="btn-add-presentation">+ Añadir otra presentación</button>
+    </fieldset>
+
+    <div class="form-actions">
+      <button type="button" routerLink="/admin/manage-products" class="btn-cancel">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="productForm.invalid">Guardar Producto</button>
+    </div>
+  </form>
+</div>

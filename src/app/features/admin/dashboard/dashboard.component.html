@@ -1,0 +1,14 @@
+<div class="admin-panel">
+  <header class="admin-header">
+    <h1>Panel de Administrador</h1>
+    <nav>
+      <a routerLink="/admin/manage-products" routerLinkActive="active-link">Gestionar Productos</a>
+      <!-- <a routerLink="/admin/create-product" routerLinkActive="active-link">Crear Producto</a> -->
+      <a (click)="logout()" class="logout-btn">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

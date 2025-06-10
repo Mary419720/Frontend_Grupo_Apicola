@@ -1,0 +1,97 @@
+<div class="manage-products-container">
+  <h2>Gestión de Productos</h2>
+
+  <div class="filter-container">
+    <input 
+      type="text" 
+      placeholder="Buscar por nombre, código, SKU..." 
+      (input)="onSearchTermChange($any($event.target).value)"
+      class="search-input">
+
+    <select (change)="onCategoryChange($event)" class="filter-select">
+      <option value="all">Todas las categorías</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+    </select>
+
+    <select (change)="onProviderChange($event)" class="filter-select">
+      <option value="all">Todos los proveedores</option>
+      <option *ngFor="let provider of providers" [value]="provider">{{ provider }}</option>
+    </select>
+
+    <button class="btn-create-product" routerLink="../create-product">+ Registrar Nuevo Producto</button>
+  </div>
+
+  <div *ngIf="products$ | async as products; else loading" class="table-responsive">
+    <table *ngIf="products.length > 0; else noProducts">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Categoría</th>
+          <th>Subcategoría</th>
+          <th>SKU</th>
+          <th>Presentación</th>
+          <th>Precio Venta</th>
+          <th>Precio Compra</th>
+          <th>Stock</th>
+          <th>Stock Mín.</th>
+          <th>Lote</th>
+          <th>Fecha Ingreso</th>
+          <th>Fecha Venc.</th>
+          <th>Proveedor</th>
+          <th>Ubicación</th>
+          <th>Observaciones</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let product of products">
+          <tr *ngFor="let presentation of product.presentaciones">
+            <td><img [src]="product.imagenes[0]" [alt]="product.nombre" class="product-image"></td>
+            <td>{{ product.codigo }}</td>
+            <td>{{ product.nombre }}</td>
+            <td>{{ product.tipo }}</td>
+            <td>{{ product.categoria }}</td>
+            <td>{{ product.subcategoria }}</td>
+            <td>{{ presentation.sku }}</td>
+            <td>{{ presentation.formato }} ({{ presentation.capacidad }})</td>
+            <td>{{ presentation.precio_venta | currency:'MXN' }}</td>
+            <td>{{ presentation.precio_compra | currency:'MXN' }}</td>
+            <td>{{ presentation.stock }}</td>
+            <td>{{ presentation.stock_minimo }}</td>
+            <td>{{ presentation.lote }}</td>
+            <td>{{ presentation.fecha_ingreso | date:'dd/MM/yyyy' }}</td>
+            <td>{{ presentation.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
+            <td>{{ presentation.proveedor }}</td>
+            <td>{{ presentation.ubicacion }}</td>
+            <td>{{ presentation.observaciones }}</td>
+            <td>{{ product.estado }}</td>
+            <td>
+              <button class="btn-edit" (click)="editProduct(presentation.id)">Editar</button>
+              <button class="btn-delete" (click)="deleteProduct(presentation.id)">Eliminar</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #loading>
+    <p>Cargando productos...</p>
+  </ng-template>
+
+  <ng-template #noProducts>
+    <p>No hay productos para mostrar. ¡Añade uno nuevo!</p>
+  </ng-template>
+
+</div>
+
+<app-edit-product
+  [isVisible]="isModalVisible"
+  [presentation]="selectedPresentation"
+  (save)="handleSave($event)"
+  (close)="handleClose()">
+</app-edit-product>

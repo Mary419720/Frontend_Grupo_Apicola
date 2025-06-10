@@ -1,0 +1,51 @@
+.filter-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-input {
+  flex-grow: 1; /* Ocupa el espacio disponible */
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.filter-select {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 16px;
+  min-width: 200px; /* Ancho mínimo para los desplegables */
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Scroll suave en móviles */
+}
+
+.table-responsive table {
+  width: 100%;
+  min-width: 2000px; /* Ancho mínimo para forzar el scroll */
+  border-collapse: collapse;
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+th, td {
+  white-space: nowrap; /* Evita que el texto se parta en varias líneas */
+  padding: 12px 15px;
+  text-align: left;
+  vertical-align: middle;
+}
