@@ -7,11 +7,12 @@ import { Product, Presentation } from '../../../core/models/product.model';
 import { ProductService } from '../../../core/services/product.service';
 import { EditProductComponent } from '../edit-product/edit-product.component';
 import { RouterModule } from '@angular/router'; // Importar RouterModule
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-manage-products',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, FormsModule, EditProductComponent, RouterModule], // Añadir RouterModule
+  imports: [CommonModule, CurrencyPipe, FormsModule, EditProductComponent, RouterModule, LucideAngularModule], // Añadir RouterModule
   templateUrl: './manage-products.component.html',
   styleUrls: ['./manage-products.component.css']
 })

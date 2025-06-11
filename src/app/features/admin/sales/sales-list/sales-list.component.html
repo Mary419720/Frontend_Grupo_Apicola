@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Listado de Ventas</h2>
+    <button routerLink="/admin/sales/new" class="btn btn-primary">
+      <lucide-icon [name]="PlusCircle" size="18" class="me-1"></lucide-icon>
+      Registrar Nueva Venta
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="alert alert-info">Cargando listado de ventas...</div>
+
+  <div *ngIf="errorLoading && !isLoading" class="alert alert-danger">
+    Error al cargar el listado de ventas.
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && sales.length === 0" class="alert alert-warning">
+    No hay ventas registradas por el momento.
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && sales.length > 0">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>ID Venta</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th class="text-end">Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sale of sales">
+          <td>{{ sale._id }}</td>
+          <td>{{ sale.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ sale.cliente.nombre }}</td>
+          <td class="text-end">{{ sale.totales.total | currency:sale.totales.moneda:'symbol':'1.2-2' }}</td>
+          <td><span class="badge bg-info text-uppercase">{{ sale.estado || 'No especificado' }}</span></td>
+          <td>
+            <button [routerLink]="['/admin/sales', sale._id]" class="btn btn-sm btn-outline-primary">
+              Ver Detalle
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+

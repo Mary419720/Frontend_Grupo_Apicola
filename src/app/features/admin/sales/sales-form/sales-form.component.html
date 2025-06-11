@@ -1,0 +1,149 @@
+<div class="container mt-4">
+  <h2>Registrar Nueva Venta</h2>
+
+  <form [formGroup]="saleForm" (ngSubmit)="onSubmit()" novalidate>
+
+    <!-- Sección Cliente -->
+    <fieldset formGroupName="cliente" class="mb-3 p-3 border rounded">
+      <legend class="w-auto px-2">Datos del Cliente</legend>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label for="fechaVenta" class="form-label">Fecha de Venta</label>
+          <input type="date" id="fechaVenta" formControlName="fecha" class="form-control">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="clienteTipo" class="form-label">Tipo de Cliente</label>
+          <select id="clienteTipo" formControlName="tipo" class="form-select">
+            <option value="visitante">Visitante</option>
+            <option value="registrado">Registrado</option> <!-- Asumiendo esta opción -->
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="clienteUsuarioId" class="form-label">ID Usuario (Opcional)</label>
+          <input type="text" id="clienteUsuarioId" formControlName="usuario_id" class="form-control">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="clienteNombre" class="form-label">Nombre Completo</label>
+          <input type="text" id="clienteNombre" formControlName="nombre" class="form-control"
+                 [ngClass]="{ 'is-invalid': saleForm.get('cliente.nombre')?.invalid && saleForm.get('cliente.nombre')?.touched }">
+          <div *ngIf="saleForm.get('cliente.nombre')?.invalid && saleForm.get('cliente.nombre')?.touched" class="invalid-feedback">
+            El nombre es requerido.
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="clienteEmail" class="form-label">Email (Opcional)</label>
+          <input type="email" id="clienteEmail" formControlName="email" class="form-control"
+                 [ngClass]="{ 'is-invalid': saleForm.get('cliente.email')?.invalid && saleForm.get('cliente.email')?.touched }">
+          <div *ngIf="saleForm.get('cliente.email')?.hasError('email') && saleForm.get('cliente.email')?.touched" class="invalid-feedback">
+            Email inválido.
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Sección Productos -->
+    <fieldset class="mb-3 p-3 border rounded">
+      <legend class="w-auto px-2">Productos</legend>
+      <div formArrayName="productos">
+        <div *ngFor="let producto of productos.controls; let i=index" [formGroupName]="i" class="row align-items-center mb-3 p-2 border-bottom">
+          <div class="col-md-2">
+            <label [for]="'productoId' + i" class="form-label">ID Producto</label>
+            <select [id]="'productoId' + i" formControlName="producto_id" class="form-select">
+              <option value="" disabled>Seleccione un producto...</option>
+              <option *ngFor="let product of availableProducts$ | async" [value]="product._id">
+                {{ product.nombre }} ({{ product.precio_unitario | currency:'MXN' }})
+              </option>
+            </select>
+            <!-- Aquí podrías integrar un buscador/selector de productos -->
+          </div>
+          <div class="col-md-3">
+            <label [for]="'productoNombre' + i" class="form-label">Nombre</label>
+            <input type="text" [id]="'productoNombre' + i" formControlName="nombre" class="form-control" readonly>
+          </div>
+          <div class="col-md-1">
+            <label [for]="'productoCantidad' + i" class="form-label">Cantidad</label>
+            <input type="number" [id]="'productoCantidad' + i" formControlName="cantidad" class="form-control">
+          </div>
+          <div class="col-md-2">
+            <label [for]="'productoUnidad' + i" class="form-label">Unidad</label>
+            <input type="text" [id]="'productoUnidad' + i" formControlName="unidad" class="form-control" readonly>
+          </div>
+          <div class="col-md-2">
+            <label [for]="'productoPrecio' + i" class="form-label">Precio Unit.</label>
+            <input type="number" [id]="'productoPrecio' + i" formControlName="precio_unitario" class="form-control" readonly>
+          </div>
+          <div class="col-md-1">
+            <label [for]="'productoSubtotal' + i" class="form-label">Subtotal</label>
+            <input type="number" [id]="'productoSubtotal' + i" formControlName="subtotal_producto" class="form-control" readonly>
+          </div>
+          <div class="col-md-1 d-flex align-items-end">
+            <button type="button" (click)="removerProducto(i)" class="btn btn-danger btn-sm">Quitar</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" (click)="agregarProducto()" class="btn btn-success mt-2">Agregar Producto</button>
+    </fieldset>
+
+    <!-- Sección Totales -->
+    <fieldset formGroupName="totales" class="mb-3 p-3 border rounded">
+      <legend class="w-auto px-2">Totales</legend>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label for="totalDescuento" class="form-label">Descuento</label>
+          <input type="number" id="totalDescuento" formControlName="descuento" class="form-control">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="totalMoneda" class="form-label">Moneda</label>
+          <select id="totalMoneda" formControlName="moneda" class="form-select">
+            <option value="MXN">MXN</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="totalSubtotalGeneral" class="form-label">Subtotal General</label>
+          <input type="number" id="totalSubtotalGeneral" formControlName="subtotalGeneral" class="form-control" readonly>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="totalTotalGeneral" class="form-label">Total General</label>
+          <input type="number" id="totalTotalGeneral" formControlName="totalGeneral" class="form-control" readonly>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Otros Campos -->
+    <div class="row mb-3">
+      <div class="col-md-4 mb-3">
+        <label for="metodoPago" class="form-label">Método de Pago</label>
+        <select id="metodoPago" formControlName="metodo_pago" class="form-select">
+          <option value="">Seleccione...</option>
+          <option value="efectivo">Efectivo</option>
+          <option value="tarjeta">Tarjeta</option>
+          <option value="transferencia">Transferencia</option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="ubicacionVenta" class="form-label">Ubicación de Venta</label>
+        <input type="text" id="ubicacionVenta" formControlName="ubicacion_venta" class="form-control">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="observaciones" class="form-label">Observaciones</label>
+      <textarea id="observaciones" formControlName="observaciones" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="submit" class="btn btn-primary" [disabled]="!saleForm.valid">Registrar Venta</button>
+      <button type="button" class="btn btn-secondary" (click)="saleForm.reset()">Limpiar Formulario</button> <!-- Opcional -->
+    </div>
+
+  </form>
+
+  <!-- Para depuración (opcional, remover en producción) -->
+  <hr>
+  <h4>Valor del Formulario (Debug):</h4>
+  <pre>{{ saleForm.value | json }}</pre>
+  <h4>Estado del Formulario (Debug):</h4>
+  <pre>{{ saleForm.status | json }}</pre>
+
+</div>

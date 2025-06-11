@@ -70,8 +70,8 @@
             <td>{{ presentation.observaciones }}</td>
             <td>{{ product.estado }}</td>
             <td>
-              <button class="btn-edit" (click)="editProduct(presentation.id)">Editar</button>
-              <button class="btn-delete" (click)="deleteProduct(presentation.id)">Eliminar</button>
+              <lucide-icon name="edit" (click)="editProduct(presentation.id)"></lucide-icon>
+              <lucide-icon name="trash-2" (click)="deleteProduct(presentation.id)"></lucide-icon>
             </td>
           </tr>
         </ng-container>

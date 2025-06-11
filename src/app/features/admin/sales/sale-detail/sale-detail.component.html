@@ -1,0 +1,108 @@
+<div class="container mt-4">
+  <div *ngIf="isLoading" class="alert alert-info">Cargando detalles de la venta...</div>
+
+  <div *ngIf="errorLoading && !isLoading" class="alert alert-danger">
+    Error al cargar los detalles de la venta o la venta no fue encontrada.
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && sale">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Detalle de Venta: {{ sale._id }}</h2>
+      <button routerLink="/admin/sales" class="btn btn-secondary">Volver a la Lista</button>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Información General</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>ID Venta:</strong> {{ sale._id }}</p>
+            <p><strong>Fecha:</strong> {{ sale.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Estado:</strong> <span class="badge bg-primary text-uppercase">{{ sale.estado || 'No especificado' }}</span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Método de Pago:</strong> {{ sale.metodo_pago }}</p>
+            <p><strong>Ubicación de Venta:</strong> {{ sale.ubicacion_venta || 'No especificada' }}</p>
+            <p><strong>Vendedor:</strong> {{ sale.usuario_vendedor || 'No especificado' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Datos del Cliente</div>
+      <div class="card-body">
+        <p><strong>Nombre:</strong> {{ sale.cliente.nombre }}</p>
+        <p><strong>Tipo:</strong> {{ sale.cliente.tipo }}</p>
+        <p *ngIf="sale.cliente.usuario_id"><strong>ID Usuario:</strong> {{ sale.cliente.usuario_id }}</p>
+        <p *ngIf="sale.cliente.email"><strong>Email:</strong> {{ sale.cliente.email }}</p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Productos Vendidos</div>
+      <div class="card-body p-0">
+        <table class="table table-striped table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="text-end">Cantidad</th>
+              <th class="text-end">Precio Unit.</th>
+              <th class="text-end">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of sale.productos">
+              <td>{{ item.nombre }} ({{ item.unidad }})</td>
+              <td class="text-end">{{ item.cantidad }}</td>
+              <td class="text-end">{{ item.precio_unitario | currency:sale.totales.moneda:'symbol':'1.2-2' }}</td>
+              <td class="text-end">{{ item.subtotal_producto | currency:sale.totales.moneda:'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">Totales</div>
+      <div class="card-body">
+        <div class="row justify-content-end">
+          <div class="col-md-4">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Subtotal Productos:
+                <span>{{ calculateProductsSubtotal(sale.productos) | currency:sale.totales.moneda:'symbol':'1.2-2' }}</span>
+              </li>
+              <li *ngIf="sale.totales.descuento && sale.totales.descuento > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                Descuento:
+                <span class="text-danger">- {{ sale.totales.descuento | currency:sale.totales.moneda:'symbol':'1.2-2' }}</span>
+              </li>
+              <li *ngIf="sale.totales.impuestos && sale.totales.impuestos > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                Impuestos:
+                <span>{{ sale.totales.impuestos | currency:sale.totales.moneda:'symbol':'1.2-2' }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center fw-bold fs-5">
+                Total General:
+                <span>{{ sale.totales.total | currency:sale.totales.moneda:'symbol':'1.2-2' }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="sale.observaciones" class="card">
+      <div class="card-header">Observaciones</div>
+      <div class="card-body">
+        <p class="mb-0">{{ sale.observaciones }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!isLoading && !sale && !errorLoading" class="alert alert-warning">
+    No se encontraron datos para esta venta.
+  </div>
+
+</div>
+
