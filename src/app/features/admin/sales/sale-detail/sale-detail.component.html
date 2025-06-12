@@ -1,4 +1,5 @@
 <div class="container mt-4">
+  <button class="btn btn-primary mb-3" (click)="downloadComprobante()" *ngIf="sale && !isLoading && !errorLoading">Descargar comprobante PDF</button>
   <div *ngIf="isLoading" class="alert alert-info">Cargando detalles de la venta...</div>
 
   <div *ngIf="errorLoading && !isLoading" class="alert alert-danger">

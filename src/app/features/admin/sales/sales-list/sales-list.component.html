@@ -37,9 +37,7 @@
           <td class="text-end">{{ sale.totales.total | currency:sale.totales.moneda:'symbol':'1.2-2' }}</td>
           <td><span class="badge bg-info text-uppercase">{{ sale.estado || 'No especificado' }}</span></td>
           <td>
-            <button [routerLink]="['/admin/sales', sale._id]" class="btn btn-sm btn-outline-primary">
-              Ver Detalle
-            </button>
+            <button (click)="goToDetail(sale?._id)" title="Ver detalle" [disabled]="!sale?._id"><lucide-icon name="eye"></lucide-icon></button>
           </td>
         </tr>
       </tbody>

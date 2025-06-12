@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { SalesService, Sale } from '../../../../core/services/sales.service';
 import { LucideAngularModule, PlusCircle } from 'lucide-angular';
 
@@ -17,7 +17,18 @@ export class SalesListComponent implements OnInit {
   errorLoading: boolean = false;
   PlusCircle = PlusCircle; // Para usar el ícono en la plantilla
 
-  constructor(private salesService: SalesService) {}
+  constructor(
+    private salesService: SalesService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  goToDetail(id: string | undefined) {
+    if (!id) return;
+    // Navega a la ruta hija ':id' relativa a la ruta actual ('sales')
+    this.router.navigate([id], { relativeTo: this.route });
+  }
+
   ngOnInit(): void {
     this.isLoading = true;
     this.salesService.getSales().subscribe({

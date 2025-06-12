@@ -24,27 +24,35 @@ export interface SaleProduct {
 }
 
 export interface Sale {
-  _id?: string; // Opcional si es generado por el backend
-  fecha: string; // ISO Date string
+  _id?: string;
+  id?: string;
+  folio?: string;
+  fecha: string;
   cliente: {
     tipo: string;
     usuario_id?: string;
     nombre: string;
     email?: string;
+    rfc?: string;
+    direccion?: string;
   };
   productos: SaleProduct[];
   totales: {
-    // subtotal: number; // Calculado en backend o frontend
-    impuestos?: number; // Opcional
+    subtotal?: number;
+    impuestos?: number;
+    iva?: number;
     descuento?: number;
-    total: number; // Calculado en backend o frontend
+    total: number;
     moneda: string;
   };
   metodo_pago: string;
-  estado?: string; // e.g., 'completada', 'pendiente', 'anulada'
+  estado?: string;
+  estatus?: string;
   usuario_vendedor?: string;
   observaciones?: string;
+  notas?: string;
   ubicacion_venta?: string;
+  qr?: string;
 }
 
 @Injectable({

@@ -14,6 +14,9 @@ import { Product, Presentation } from '../../../core/models/product.model';
 })
 export class CreateProductComponent implements OnInit {
   productForm!: FormGroup;
+  categories: { categoria: string; subcategorias: string[] }[] = [];
+  subcategories: string[] = [];
+  types: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -22,17 +25,25 @@ export class CreateProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.categories = this.productService.getCategories();
+    this.types = this.productService.getTypes();
     this.productForm = this.fb.group({
       codigo: ['', Validators.required],
       nombre: ['', Validators.required],
       descripcion: [''],
       tipo: ['', Validators.required],
       categoria: ['', Validators.required],
-      subcategoria: [''],
+      subcategoria: ['', Validators.required],
       estado: ['Activo', Validators.required],
-      // Por ahora, no manejaremos imágenes directamente en este formulario básico
-      // imagenes: this.fb.array([]), 
       presentaciones: this.fb.array([this.createPresentationGroup()])
+    });
+
+    // Inicializar subcategorías y tipos si hay una categoría seleccionada
+    this.productForm.get('categoria')!.valueChanges.subscribe((categoria: string) => {
+      const found = this.categories.find(cat => cat.categoria === categoria);
+      this.subcategories = found ? found.subcategorias : [];
+      // Resetear subcategoría si cambia la categoría
+      this.productForm.get('subcategoria')!.setValue('');
     });
   }
 

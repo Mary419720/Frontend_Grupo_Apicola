@@ -29,8 +29,10 @@
 
         <div class="form-group">
           <label for="tipo">Tipo <span class="required">*</span></label>
-          <input id="tipo" formControlName="tipo" type="text">
-          <!-- Podría ser un select si los tipos son predefinidos -->
+          <select id="tipo" formControlName="tipo">
+            <option value="" disabled selected>Selecciona un tipo</option>
+            <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+          </select>
           <div *ngIf="productForm.get('tipo')?.invalid && (productForm.get('tipo')?.dirty || productForm.get('tipo')?.touched)" class="error-message">
             El tipo es requerido.
           </div>
@@ -38,16 +40,24 @@
 
         <div class="form-group">
           <label for="categoria">Categoría <span class="required">*</span></label>
-          <input id="categoria" formControlName="categoria" type="text">
-          <!-- Podría ser un select -->
+          <select id="categoria" formControlName="categoria">
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <option *ngFor="let cat of categories" [value]="cat.categoria">{{ cat.categoria }}</option>
+          </select>
           <div *ngIf="productForm.get('categoria')?.invalid && (productForm.get('categoria')?.dirty || productForm.get('categoria')?.touched)" class="error-message">
             La categoría es requerida.
           </div>
         </div>
 
         <div class="form-group">
-          <label for="subcategoria">Subcategoría</label>
-          <input id="subcategoria" formControlName="subcategoria" type="text">
+          <label for="subcategoria">Subcategoría <span class="required">*</span></label>
+          <select id="subcategoria" formControlName="subcategoria" [disabled]="!subcategories.length">
+            <option value="" disabled selected>Selecciona una subcategoría</option>
+            <option *ngFor="let sub of subcategories" [value]="sub">{{ sub }}</option>
+          </select>
+          <div *ngIf="productForm.get('subcategoria')?.invalid && (productForm.get('subcategoria')?.dirty || productForm.get('subcategoria')?.touched)" class="error-message">
+            La subcategoría es requerida.
+          </div>
         </div>
 
         <div class="form-group">
