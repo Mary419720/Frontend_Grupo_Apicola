@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state):
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated() && authService.hasRole('admin')) {
+  if (authService.isAuthenticated() && authService.hasRole('administrador')) { // Ajustado para consistencia
     return true;
   }
 

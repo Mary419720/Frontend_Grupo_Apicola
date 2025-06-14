@@ -81,11 +81,24 @@ export class CreateProductComponent implements OnInit {
     if (this.productForm.valid) {
       const newProductData = this.productForm.value;
       
-      // El servicio se encarga de los IDs, fecha_creacion e imagenes
-      this.productService.addProduct(newProductData as Omit<Product, 'id' | 'fecha_creacion' | 'imagenes'> & { presentaciones: Omit<Presentation, 'id'>[] });
-      
-      alert('¡Producto registrado exitosamente!'); // O un toast/snackbar más elegante
-      this.router.navigate(['/admin/manage-products']);
+      // El servicio ahora devuelve un Observable
+      this.productService.addProduct(newProductData as Omit<Product, 'id' | 'fecha_creacion' | 'imagenes'> & { presentaciones: Omit<Presentation, 'id'>[] })
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              console.log('Producto guardado en MongoDB:', response.data);
+              alert('¡Producto registrado exitosamente en la base de datos!');
+              this.router.navigate(['/admin/manage-products']);
+            } else {
+              console.error('Error al guardar producto:', response.message);
+              alert(`Error al guardar el producto: ${response.message || 'Intente nuevamente'}`);
+            }
+          },
+          error: (error) => {
+            console.error('Error al guardar producto:', error);
+            alert('Error al conectar con el servidor. Por favor, intente nuevamente.');
+          }
+        });
     } else {
       console.error('Formulario no válido. Por favor, revisa los campos.');
       // Marcar campos como tocados para mostrar errores de validación en la UI

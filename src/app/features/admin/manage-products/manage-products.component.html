@@ -1,5 +1,8 @@
 <div class="manage-products-container">
   <h2>Gestión de Productos</h2>
+  
+  <!-- Componente de depuración para verificar la carga de productos -->
+  <app-product-debug></app-product-debug>
 
   <div class="filter-container">
     <input 
@@ -22,6 +25,22 @@
   </div>
 
   <div *ngIf="products$ | async as products; else loading" class="table-responsive">
+    <!-- Panel de depuración extendido para ver datos y filtros -->
+    <div class="debug-panel">
+      <h4>Estado actual de datos:</h4>
+      <p>Productos sin filtrar: {{ allProducts.length || 0 }}</p>
+      <p>Productos filtrados: {{ products.length || 0 }}</p>
+      <p>Categorías disponibles: {{ categories.length || 0 }}</p>
+      <p>Proveedores disponibles: {{ providers.length || 0 }}</p>
+      <button (click)="reloadProducts()" class="btn-reload">Recargar productos</button>
+    </div>
+    
+    <!-- Mostrar mensaje de depuración -->
+    <div *ngIf="products.length === 0" class="debug-info">
+      <p>No se encontraron productos para mostrar después de aplicar los filtros.</p>
+      <button (click)="reloadProducts()" class="btn-reload">Recargar productos</button>
+    </div>
+    
     <table *ngIf="products.length > 0; else noProducts">
       <thead>
         <tr>
@@ -50,7 +69,14 @@
       <tbody>
         <ng-container *ngFor="let product of products">
           <tr *ngFor="let presentation of product.presentaciones">
-            <td><img [src]="product.imagenes[0]" [alt]="product.nombre" class="product-image"></td>
+            <td>
+              <img 
+                [src]="product.imagenes && product.imagenes.length > 0 ? product.imagenes[0] : 'assets/images/placeholder.jpg'" 
+                [alt]="product.nombre" 
+                class="product-image"
+                onerror="this.src='assets/images/placeholder.jpg'; this.onerror='';"
+              >
+            </td>
             <td>{{ product.codigo }}</td>
             <td>{{ product.nombre }}</td>
             <td>{{ product.tipo }}</td>
@@ -63,8 +89,8 @@
             <td>{{ presentation.stock }}</td>
             <td>{{ presentation.stock_minimo }}</td>
             <td>{{ presentation.lote }}</td>
-            <td>{{ presentation.fecha_ingreso | date:'dd/MM/yyyy' }}</td>
-            <td>{{ presentation.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
+            <td>{{ presentation.fecha_ingreso && presentation.fecha_ingreso !== 'N/A' ? (presentation.fecha_ingreso | date:'dd/MM/yyyy') : 'N/A' }}</td>
+            <td>{{ presentation.fecha_vencimiento && presentation.fecha_vencimiento !== 'N/A' ? (presentation.fecha_vencimiento | date:'dd/MM/yyyy') : 'N/A' }}</td>
             <td>{{ presentation.proveedor }}</td>
             <td>{{ presentation.ubicacion }}</td>
             <td>{{ presentation.observaciones }}</td>
