@@ -1,0 +1,53 @@
+@import '../../../auth/_auth.styles.scss';
+
+// Wrapper for password input to contain the toggle icon
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  // The input field within the wrapper
+  .form-control {
+    padding-right: 40px; // Make space for the icon
+  }
+
+  // The icon to toggle password visibility
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    color: #868e96; // A neutral grey
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #343a40; // Darken on hover
+    }
+  }
+}
+
+// Wrapper for the select element to fix label issues and standardize appearance
+.select-wrapper {
+  position: relative;
+  width: 100%;
+
+  select.form-control {
+    appearance: none; // Remove default system appearance
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding-right: 30px; // Space for custom arrow
+  }
+
+  // Custom dropdown arrow
+  &::after {
+    content: '▼';
+    font-size: 12px;
+    color: #868e96;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; // Allow clicks to pass through to the select
+  }
+}
+

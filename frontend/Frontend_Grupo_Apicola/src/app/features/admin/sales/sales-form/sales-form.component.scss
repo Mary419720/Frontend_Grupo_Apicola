@@ -1,0 +1,320 @@
+@import '../../../../../styles/variables';
+
+:host {
+  display: block;
+  background-color: $background-color;
+  padding: 2rem;
+}
+
+.sales-form-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-title {
+  font-family: $font-family-serif;
+  color: $secondary-color;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2.8rem;
+  font-weight: 600;
+}
+
+.sale-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-card {
+  background-color: $card-background;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  overflow: hidden;
+  transition: box-shadow $transition-speed;
+
+  &:hover {
+    box-shadow: $box-shadow-hover;
+  }
+}
+
+.card-header {
+  background-color: lighten($background-color, 2%);
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $secondary-color;
+  border-bottom: 1px solid $medium-gray;
+  font-family: $font-family-sans-serif;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+// Grid Layouts
+.form-grid-columns-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+// Form Fields General Styling
+.form-field {
+  label {
+    display: block;
+    font-weight: 500;
+    color: $text-color;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius;
+    background-color: $white;
+    font-size: 1rem;
+    color: $gray-700;
+    transition: border-color $transition-speed, box-shadow $transition-speed;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
+    }
+
+    &[readonly] {
+      background-color: $gray-100;
+      cursor: not-allowed;
+      color: $gray-600;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+// Product List Specifics
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.product-item {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr auto;
+  gap: 1.5rem;
+  align-items: flex-end;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $gray-200;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.add-product-action {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+// Totals Section
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  
+  .iva-field {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px; 
+      font-size: 0.9rem;
+      font-weight: 500;
+
+      input[type="checkbox"] {
+        margin-right: 8px;
+        width: auto;
+      }
+    }
+
+    input[readonly] {
+      background-color: #f0f0f0;
+    }
+  }
+
+  .total-final {
+    label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $secondary-color;
+    }
+    input {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $success-color;
+      background-color: lighten($success-color, 45%) !important;
+      border-color: darken($success-color, 10%);
+    }
+  }
+  
+  .payment-method {
+    grid-column: 1 / -1; 
+    @media (min-width: 992px) {
+      grid-column: auto; 
+    }
+  }
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  align-items: end;
+
+  .total-field {
+    input {
+      background-color: #d4edda;
+      font-weight: bold;
+      color: #155724;
+      border-color: #c3e6cb;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  }
+}
+
+.iva-field {
+  display: flex;
+  flex-direction: column;
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 500;
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      width: auto;
+    }
+  }
+
+  .iva-amount {
+    max-width: 150px;
+  }
+}
+
+// Buttons
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-speed;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: $secondary-color;
+  &:hover:not(:disabled) {
+    background-color: darken($primary-color, 8%);
+  }
+}
+
+.btn-secondary {
+  background-color: $gray-200;
+  color: $gray-800;
+  border: 1px solid $gray-300;
+  &:hover:not(:disabled) {
+    background-color: $gray-300;
+    border-color: $gray-400;
+  }
+}
+
+.btn-icon {
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: $gray-600;
+  
+  &:hover:not(:disabled) {
+    background-color: $gray-200;
+    color: $danger-color;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  .submit-btn {
+    border-radius: 12px; 
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 992px) {
+  .product-item {
+    grid-template-columns: 1fr 1fr;
+    .actions {
+      grid-column: 2 / 3;
+      justify-self: end;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+  .main-title {
+    font-size: 2rem;
+  }
+  .product-item {
+    grid-template-columns: 1fr;
+    .actions {
+      grid-column: 1 / -1;
+    }
+  }
+  .form-actions {
+    flex-direction: column;
+    .btn {
+      width: 100%;
+    }
+  }
+}

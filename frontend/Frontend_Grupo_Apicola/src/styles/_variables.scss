@@ -1,0 +1,182 @@
+// ========================================
+// PALETA DE COLORES DE MELARIUM
+// ========================================
+
+// Colores Principales
+$primary-color: #ffc107;         // Amarillo miel (color principal)
+$primary-dark: darken($primary-color, 10%);
+$primary-light: lighten($primary-color, 15%);
+$secondary-color: #3d2c21;       // Marrón oscuro (para texto principal, títulos)
+$accent-color: #dc9309;          // Naranja miel (para acentos y elementos destacados)
+$background-color: #fdfaf6;      // Crema muy claro (para fondos de página)
+$card-background: #ffffff;       // Blanco (para tarjetas y secciones)
+$white: #ffffff;
+$black: #000000;                 // Negro
+
+// Paleta de Grises y Texto
+$text-color: #5a4e46;            // Marrón medio (para texto secundario)
+$text-muted: #6c757d;            // Gris medio (para texto secundario atenuado)
+$light-gray: #f8f9fa;            // Gris muy claro (fondos alternativos)
+$medium-gray: #e9ecef;           // Gris claro (bordes, divisores)
+$dark-gray-text: #495057;        // Gris oscuro (texto secundario)
+
+// Escala completa de grises
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+// Colores de Estado
+$success-color: #28a745;         // Verde para estados de éxito
+$success-light: lighten($success-color, 40%);
+$danger-color: #dc3545;          // Rojo para estados de error o alertas
+$danger-light: lighten($danger-color, 40%);
+$warning-color: #ffc107;         // Amarillo para advertencias
+$warning-light: lighten($warning-color, 30%);
+$info-color: #17a2b8;            // Azul para información
+$info-light: lighten($info-color, 40%);
+
+// ========================================
+// TIPOGRAFÍA
+// ========================================
+
+// Familias tipográficas
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-serif: 'Playfair Display', serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+// Tamaños de texto
+$font-size-base: 1rem;           // 16px
+$font-size-xs: 0.75rem;          // 12px
+$font-size-sm: 0.875rem;         // 14px
+$font-size-md: 1rem;             // 16px
+$font-size-lg: 1.125rem;         // 18px
+$font-size-xl: 1.25rem;          // 20px
+$font-size-2xl: 1.5rem;          // 24px
+$font-size-3xl: 1.875rem;        // 30px
+$font-size-4xl: 2.25rem;         // 36px
+
+// Pesos de fuente
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Alturas de línea
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// ========================================
+// ESPACIADO
+// ========================================
+
+// Sistema de espaciado consistente
+$spacing-1: 0.25rem;             // 4px
+$spacing-2: 0.5rem;              // 8px
+$spacing-3: 0.75rem;             // 12px
+$spacing-4: 1rem;                // 16px
+$spacing-5: 1.25rem;             // 20px
+$spacing-6: 1.5rem;              // 24px
+$spacing-8: 2rem;                // 32px
+$spacing-10: 2.5rem;             // 40px
+$spacing-12: 3rem;               // 48px
+$spacing-16: 4rem;               // 64px
+$spacing-20: 5rem;               // 80px
+
+// ========================================
+// BORDES Y SOMBRAS
+// ========================================
+
+// Bordes redondeados
+$border-radius-none: 0;
+$border-radius-sm: 0.25rem;      // 4px
+$border-radius: 0.5rem;          // 8px
+$border-radius-md: 0.75rem;      // 12px
+$border-radius-lg: 1rem;         // 16px
+$border-radius-xl: 1.5rem;       // 24px
+$border-radius-pill: 50rem;
+$border-radius-circle: 50%;
+
+// Bordes
+$border-width: 1px;
+$border-width-md: 2px;
+$border-width-lg: 3px;
+$border-color: $gray-300;
+$border-color-light: $gray-200;
+
+// Sistema de sombras
+$box-shadow-none: none;
+$box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$box-shadow-md: 0 6px 15px rgba(0, 0, 0, 0.07);
+$box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+$box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+// ========================================
+// TRANSICIONES Y ANIMACIONES
+// ========================================
+
+$transition-speed: 0.3s;           // Velocidad de transición estándar
+$transition-fast: 0.15s ease;
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+$transition: all 0.3s ease;        // Transición general para elementos
+
+// Curvas de animación
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+// ========================================
+// VARIABLES PARA COMPONENTES
+// ========================================
+
+// Botones
+$btn-padding-y: $spacing-2;
+$btn-padding-x: $spacing-4;
+$btn-font-weight: $font-weight-medium;
+$btn-border-radius: $border-radius;
+
+// Cards
+$card-padding: $spacing-6;
+$card-border-radius: $border-radius;
+$card-border-color: $gray-200;
+$card-box-shadow: $box-shadow;
+$card-hover-box-shadow: $box-shadow-hover;
+$card-bg: $card-background;       // Alias para mantener compatibilidad
+
+// Forms
+$input-height: 2.5rem;
+$input-padding-y: $spacing-2;
+$input-padding-x: $spacing-3;
+$input-border-color: $gray-400;
+$input-border-radius: $border-radius;
+$input-focus-border-color: lighten($primary-color, 10%);
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+
+// Tablas
+$table-cell-padding-y: $spacing-3;
+$table-cell-padding-x: $spacing-4;
+$table-head-bg: rgba($primary-color, 0.1);
+$table-head-color: $secondary-color;
+$table-border-color: $gray-300;
+$table-stripe-color: rgba($primary-color, 0.03);
+$table-hover-color: rgba($primary-color, 0.07);
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;

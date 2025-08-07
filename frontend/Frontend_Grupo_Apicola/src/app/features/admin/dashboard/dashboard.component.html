@@ -1,0 +1,36 @@
+<div class="admin-panel">
+  <header class="admin-header">
+    <div class="header-content">
+      <div class="logo-container">
+        <!-- Puedes usar un <img> o un <a> con el logo -->
+        <a routerLink="/admin" class="logo">
+          <img src="assets/images/image.png" alt="Melarium Logo">
+          <h1 class="logo">Melarium Admin</h1>
+        </a>
+      </div>
+    
+
+      <nav class="main-nav" [class.is-open]="isMenuOpen">
+        <a routerLink="/" class="home-link" title="Ir a la página principal">
+          <lucide-icon name="Home"></lucide-icon>
+        </a>
+        <a routerLink="/admin" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Resumen</a>
+        <a routerLink="/admin/manage-products" routerLinkActive="active-link" (click)="closeMenu()">Productos</a>
+        <a routerLink="/admin/sales" routerLinkActive="active-link" (click)="closeMenu()">Ventas</a>
+        <a routerLink="/admin/create-user" routerLinkActive="active-link" (click)="closeMenu()">Usuarios</a>
+        <a (click)="logout()" class="logout-link">
+          <lucide-icon name="log-out"></lucide-icon>
+          <span class="logout-text">Cerrar Sesión</span>
+        </a>
+      </nav>
+      <button class="menu-toggle" (click)="toggleMenu()">
+        <lucide-icon name="menu"></lucide-icon>
+      </button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

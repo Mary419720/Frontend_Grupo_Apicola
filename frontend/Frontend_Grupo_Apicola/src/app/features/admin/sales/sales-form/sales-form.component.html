@@ -1,0 +1,142 @@
+<div class="sales-form-container">
+  <h2 class="main-title">Registrar Nueva Venta</h2>
+
+  <form [formGroup]="saleForm" (ngSubmit)="onSubmit()" class="sale-form">
+
+    <!-- 1. Información del Cliente -->
+    <div class="form-card">
+      <h3 class="card-header">1. Información del Cliente</h3>
+      <div class="card-body form-grid-columns-2" formGroupName="cliente">
+        <div class="form-field">
+          <label for="cliente-nombre">Nombre Completo</label>
+          <input id="cliente-nombre" type="text" formControlName="nombre" placeholder="Ej. Juan Pérez">
+        </div>
+        <div class="form-field">
+          <label for="cliente-email">Email (Opcional)</label>
+          <input id="cliente-email" type="email" formControlName="email" placeholder="correo@ejemplo.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Productos -->
+    <div class="form-card">
+      <h3 class="card-header">2. Productos</h3>
+      <div class="card-body">
+        <div formArrayName="productos" class="product-list">
+          <div *ngFor="let producto of productos.controls; let i = index" [formGroupName]="i" class="product-item">
+            <!-- Selector de Producto -->
+            <div class="form-field product-select">
+              <label [for]="'producto-id-' + i">Producto</label>
+              <select [id]="'producto-id-' + i" formControlName="producto_id">
+                <option value="" disabled>Seleccione un producto</option>
+                <option *ngFor="let prod of allProducts" [value]="prod._id">{{ prod.nombre }}</option>
+              </select>
+            </div>
+
+            <!-- Selector de Presentación -->
+            <div class="form-field presentation-select">
+              <label [for]="'presentacion-id-' + i">Presentación</label>
+              <select [id]="'presentacion-id-' + i" formControlName="presentacion_id">
+                <option value="" disabled>Seleccione una presentación</option>
+                <option *ngFor="let pres of availablePresentations[i]" [value]="pres._id">
+                  {{ pres.formato }} (Stock: {{ pres.stock }})
+                </option>
+              </select>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="form-field quantity">
+              <label [for]="'cantidad-' + i">Cantidad</label>
+              <input [id]="'cantidad-' + i" type="number" formControlName="cantidad" min="1">
+            </div>
+
+            <!-- Precio Unitario -->
+            <div class="form-field price">
+              <label [for]="'precio-' + i">Precio Unit.</label>
+              <input [id]="'precio-' + i" type="text" formControlName="precio_unitario" readonly>
+            </div>
+
+            <!-- Subtotal -->
+            <div class="form-field subtotal">
+              <label [for]="'subtotal-' + i">Subtotal</label>
+              <input [id]="'subtotal-' + i" type="text" formControlName="subtotal_producto" readonly>
+            </div>
+
+            <!-- Botón de Eliminar -->
+            <div class="form-field actions">
+              <button type="button" (click)="removeProduct(i)" class="btn-icon remove-btn" title="Eliminar producto">
+                <lucide-icon name="Trash2" size="18"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="add-product-action">
+          <button type="button" (click)="addProduct()" class="btn btn-secondary">
+            <lucide-icon name="PlusCircle" size="16"></lucide-icon>
+            <span>Añadir Otro Producto</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Resumen y Pago -->
+    <div class="form-card" formGroupName="totales">
+      <h3 class="card-header">3. Resumen y Pago</h3>
+      <div class="card-body totals-grid">
+        <div class="summary-grid">
+          <div class="form-field">
+            <label for="subtotal">Subtotal</label>
+            <input id="subtotal" type="text" formControlName="subtotal" readonly>
+          </div>
+
+          <div class="form-field">
+            <label for="descuento">Descuento ($)</label>
+            <input id="descuento" type="number" formControlName="descuento" min="0">
+          </div>
+
+          <div class="form-field iva-field">
+            <label for="aplica_iva" class="checkbox-label">
+              <input id="aplica_iva" type="checkbox" formControlName="aplica_iva">
+              <span>Aplicar IVA (16%)</span>
+            </label>
+            <input type="text" class="iva-amount" formControlName="iva" readonly>
+          </div>
+
+          <div class="form-field total-field">
+            <label for="total">Total</label>
+            <input id="total" type="text" formControlName="total" readonly>
+          </div>
+        </div>
+        <div class="form-field payment-method">
+          <label for="metodo-pago">Método de Pago</label>
+          <select id="metodo-pago" formControlName="metodo_pago">
+            <option value="" disabled>Seleccione un método</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta_credito">Tarjeta de Crédito</option>
+            <option value="tarjeta_debito">Tarjeta de Débito</option>
+            <option value="transferencia">Transferencia Bancaria</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Notas Adicionales -->
+    <div class="form-card">
+      <h3 class="card-header">4. Notas Adicionales</h3>
+      <div class="card-body">
+        <div class="form-field">
+          <textarea formControlName="notas" rows="4" placeholder="Añadir observaciones sobre la venta..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón de Envío -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="!saleForm.valid" class="btn btn-primary submit-btn">
+        <lucide-icon name="CheckCircle" size="20"></lucide-icon>
+        <span>Registrar Venta</span>
+      </button>
+    </div>
+
+  </form>
+</div>

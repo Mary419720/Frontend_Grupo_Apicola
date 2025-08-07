@@ -1,0 +1,337 @@
+.sales-period-select:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f0f2f5; // Un fondo suave para toda la vista
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.kpi-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .icon-container {
+    background-color: #e3f2fd; // Azul claro
+    color: #1e88e5; // Azul primario
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    lucide-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Colores específicos por tarjeta
+  &.sales .icon-container { background-color: #e8f5e9; color: #43a047; } // Verde
+  &.customers .icon-container { background-color: #fff3e0; color: #fb8c00; } // Naranja
+  &.products .icon-container { background-color: #ede7f6; color: #5e35b1; } // Morado
+  &.revenue .icon-container { background-color: #e0f7fa; color: #00acc1; } // Cian
+
+  .kpi-content {
+    h3 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #6c757d;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0.25rem 0 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #343a40;
+
+      &.positive {
+        color: #28a745; // Verde para crecimiento
+      }
+
+      &.negative {
+        color: #dc3545; // Rojo para decrecimiento
+      }
+    }
+  }
+}
+
+.chart-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  grid-column: 1 / -1; // Ocupa todo el ancho por defecto
+
+  @media (min-width: 1200px) {
+    grid-column: span 4;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+}
+
+.btn-group {
+  display: flex;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  overflow: hidden;
+
+  button {
+    background-color: #fff;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: #6c757d;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:not(:last-child) {
+      border-right: 1px solid #dee2e6;
+    }
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    &.active {
+      background-color: #fdc10d;
+      color: #fff;
+    }
+
+    lucide-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.period-selector {
+  select {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+  }
+}
+
+// Estilos para el contenedor del gráfico SVG
+.chart-container {
+  width: 100%;
+  height: 350px; // Altura fija para el gráfico
+  position: relative;
+}
+
+.sales-chart-svg {
+  width: 100%;
+  height: 100%;
+
+  .grid-line {
+    stroke: #e9ecef;
+    stroke-dasharray: 2, 2;
+  }
+
+  .axis-label {
+    font-size: 0.75rem;
+    fill: #6c757d;
+  }
+
+  .bar {
+    fill: #fdc10d; // Color principal de la app
+    transition: fill 0.2s ease-in-out;
+
+    &:hover {
+      fill: #e6ab0c; // Tono más oscuro para hover
+    }
+  }
+
+  .bar-label {
+    font-size: 12px;
+    fill: #495057; // Un color oscuro pero no negro puro
+    text-anchor: middle; // Centrar el texto horizontalmente
+    font-weight: 600;
+    pointer-events: none; // Para que no interfiera con el hover de la barra
+  }
+
+  .data-label {
+    font-size: 12px;
+    fill: #a0aec0; // Color de texto sutil
+    text-anchor: middle;
+    pointer-events: none;
+    font-weight: 500;
+  }
+
+  .bar-historical {
+    fill: #fdc10d;
+    transition: fill 0.3s ease;
+
+    &:hover {
+      fill: #e6ab0c; // Tono más oscuro para hover, igual que el gráfico principal
+    }
+  }
+
+  .data-label-historical {
+    font-size: 12px;
+    fill: #495057; // Color oscuro para mejorar legibilidad
+    text-anchor: middle;
+    pointer-events: none;
+    font-weight: 500;
+  }
+
+button.btn-fetch-history, .btn-fetch-history {
+  background-color: #fdc10d !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+  outline: none;
+
+  &:hover, &:focus {
+    background-color: #e6ab0c !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+}
+
+.btn-fetch-history {
+  background-color: #fdc10d;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e6ab0c;
+  }
+}
+
+  .line-chart-path {
+    fill: none;
+    stroke: #fdc10d; // Color principal de la app
+    stroke-width: 2;
+  }
+
+  .line-chart-point {
+    fill: #fdc10d; // Color principal de la app
+    stroke: white;
+    stroke-width: 2;
+    transition: r 0.2s ease-in-out;
+
+    &:hover {
+      r: 6; // Agrandar el punto al pasar el cursor
+    }
+  }
+
+  .chart-tooltip {
+    pointer-events: none; // Para que no interfiera con otros eventos del mouse
+    transition: opacity 0.2s ease-in-out;
+
+    rect {
+      fill: #212529; // Fondo oscuro
+      stroke: #495057;
+      stroke-width: 1;
+      opacity: 0.9;
+    }
+
+    text {
+      fill: #f8f9fa; // Texto claro
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Estilos para el estado de carga y error
+.state-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  grid-column: 1 / -1;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+
+  .loading-text,
+  .error-text {
+    font-size: 1.1rem;
+    color: #6c757d;
+  }
+
+  .error-text {
+    color: #dc3545;
+  }
+}
+
+// Media queries para responsividad
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr; // Una columna en móviles
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

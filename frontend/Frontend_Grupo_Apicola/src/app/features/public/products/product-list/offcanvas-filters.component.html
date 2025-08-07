@@ -1,0 +1,53 @@
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+  <div class="offcanvas-header border-bottom">
+    <div class="filter-header mb-0">
+      <h5>
+        <lucide-icon name="sliders-horizontal" size="18"></lucide-icon>
+        Filtros
+      </h5>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="catalog-filters-compact d-flex flex-column h-100">
+      <!-- Sistema de acordeón para filtros -->
+      <div class="accordion filter-accordion flex-grow-1" id="filterAccordion">
+        <!-- Categorías -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#categoriesCollapse" aria-expanded="true" aria-controls="categoriesCollapse">
+              Categorías
+            </button>
+          </h2>
+          <div id="categoriesCollapse" class="accordion-collapse collapse show" data-bs-parent="#filterAccordion">
+            <div class="accordion-body p-2">
+              <div class="filter-item-container">
+                <div *ngFor="let category of categories" class="filter-check-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [id]="'category-offcanvas-' + category.categoria"
+                      [checked]="selectedCategories.includes(category.categoria)"
+                      (change)="toggleCategory(category.categoria)">
+                    <label class="form-check-label text-truncate" [for]="'category-offcanvas-' + category.categoria" title="{{ category.categoria }}">
+                      {{ category.categoria }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Aquí se pueden añadir más filtros como otros acordeones -->
+      </div>
+
+      <!-- Botones de acción en el pie del offcanvas -->
+      <div class="offcanvas-footer mt-auto pt-3 border-top">
+        <button class="btn btn-primary w-100 mb-2" data-bs-dismiss="offcanvas" (click)="applyFilters()">Aplicar Filtros</button>
+        <button class="reset-filter w-100" (click)="resetFilters()" *ngIf="hasActiveFilters()">
+          <lucide-icon name="rotate-cw" size="16"></lucide-icon>
+          Limpiar filtros ({{getActiveFiltersCount()}})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

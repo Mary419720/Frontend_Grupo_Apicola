@@ -1,0 +1,164 @@
+// ==============================================
+// ESTILOS PARA FILTROS Y ACORDEÓN
+// ==============================================
+
+.filter-accordion {
+  // Resetea los estilos por defecto de Bootstrap para un look minimalista
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: #eef2f7; // Un borde muy sutil
+  --bs-accordion-border-radius: 10px; // Bordes redondeados consistentes
+  --bs-accordion-inner-border-radius: 10px;
+  --bs-accordion-btn-focus-box-shadow: none; // Quitar sombra de foco
+  --bs-accordion-active-color: #f2a104; // Color primario para el texto activo
+  --bs-accordion-active-bg: transparent;
+
+  .accordion-item {
+    margin-bottom: 0.5rem; // Espacio entre secciones del acordeón
+    border: 1px solid var(--bs-accordion-border-color);
+    border-radius: var(--bs-accordion-border-radius) !important; // Forzar el radio
+    background-color: #fff; // Fondo blanco para el item
+  }
+
+  .accordion-header {
+    .accordion-button {
+      font-weight: 600;
+      color: #2b2118; // Color de texto principal
+      font-size: 1rem;
+      padding: 1rem 1.25rem;
+
+      &:not(.collapsed) {
+        box-shadow: none;
+      }
+
+      // Personalizar el ícono del acordeón (flecha)
+      &::after {
+        --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232b2118'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f2a104'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+      }
+    }
+  }
+
+  .accordion-body {
+    padding: 0.5rem 1rem; // Ajuste de padding lateral
+
+    .filter-item-container {
+      max-height: 280px; // Un poco más de altura
+      overflow-y: auto;
+      padding-right: 10px;
+
+      .form-check {
+        padding: 0.3rem 0.5rem; // Padding vertical y horizontal
+        margin-bottom: 2px; // Espacio mínimo entre elementos
+        border-radius: 6px; // Bordes redondeados suaves
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: #f5f5f5; // Un hover muy sutil
+        }
+
+        .form-check-label {
+          font-size: 0.95rem; // Ligeramente más pequeño para compactar
+        }
+      }
+    }
+
+    .form-check-label {
+      cursor: pointer;
+      width: 100%; // Ocupar todo el ancho para el flexbox
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .category-count {
+      font-size: 0.85em;
+      font-weight: 600;
+      color: var(--text-color-light);
+      background-color: var(--grey-light);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+// Estilos para el header de los filtros
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+
+  h5 {
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reset-filter {
+    background: none;
+    border: none;
+    color: #8c7a69;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #2b2118;
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+// Estilo para el nuevo botón de filtro junto al buscador
+.filter-button {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  color: var(--text-color-light);
+  border-radius: 50%; // Botón circular
+  width: 48px;       // Ancho fijo
+  height: 48px;      // Altura fija
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0; // Evita que el botón se encoja
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Estilos para el pie de página del offcanvas de filtros
+.offcanvas-footer {
+  .reset-filter {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--bs-border-radius);
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+
+    &:hover {
+      background-color: var(--grey-light);
+      color: var(--text-color-dark);
+    }
+  }
+}
+

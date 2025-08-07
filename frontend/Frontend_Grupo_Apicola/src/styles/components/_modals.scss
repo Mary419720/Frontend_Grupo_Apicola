@@ -1,0 +1,223 @@
+// ========================================
+// ESTILOS DE MODALES
+// ========================================
+// Las variables se importan desde _index.scss
+
+// Overlay/backdrop del modal
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $modal-backdrop-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal-backdrop;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: opacity $transition-slow;
+  padding: $spacing-4;
+  
+  &.fade {
+    opacity: 0;
+    
+    &.show {
+      opacity: 1;
+    }
+  }
+}
+
+// Contenedor del modal
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-lg;
+  margin: $spacing-4 auto;
+  transition: transform $transition-slow, opacity $transition-slow;
+  z-index: $z-index-modal;
+  transform: translateY(0);
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - #{$spacing-16});
+  overflow: hidden;
+  
+  &.fade {
+    transform: translateY(-30px);
+    opacity: 0;
+    
+    &.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  // Tamaños de modales
+  &.modal-sm {
+    max-width: 300px;
+  }
+  
+  &.modal-lg {
+    max-width: 800px;
+  }
+  
+  &.modal-xl {
+    max-width: 1140px;
+  }
+  
+  &.modal-fullscreen {
+    max-width: none;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
+// Cabecera del modal
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-4 $spacing-6;
+  border-bottom: $border-width solid $border-color;
+  
+  .modal-title {
+    margin: 0;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xl;
+    color: $secondary-color;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: $font-size-xl;
+    color: $text-muted;
+    cursor: pointer;
+    padding: $spacing-1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-circle;
+    transition: background-color $transition-base;
+    
+    &:hover {
+      background-color: $light-gray;
+      color: $text-color;
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: $box-shadow-focus;
+    }
+  }
+}
+
+// Cuerpo del modal
+.modal-body {
+  padding: $spacing-6;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+// Pie del modal
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-6;
+  border-top: $border-width solid $border-color;
+  
+  // Variante con botones centrados
+  &.modal-footer-centered {
+    justify-content: center;
+  }
+}
+
+// Animación del modal
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+// Modal con scroll personalizado
+.modal-scrollbar {
+  .modal-body {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba($light-gray, 0.6);
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba($secondary-color, 0.3);
+      border-radius: 10px;
+      
+      &:hover {
+        background-color: rgba($secondary-color, 0.5);
+      }
+    }
+  }
+}
+
+// Modal con variantes de color
+.modal-primary {
+  .modal-header {
+    background-color: rgba($primary-color, 0.1);
+    border-bottom-color: rgba($primary-color, 0.2);
+    
+    .modal-title {
+      color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.modal-secondary {
+  .modal-header {
+    background-color: rgba($secondary-color, 0.1);
+    border-bottom-color: rgba($secondary-color, 0.2);
+    
+    .modal-title {
+      color: $secondary-color;
+    }
+  }
+}
+
+.modal-accent {
+  .modal-header {
+    background-color: rgba($accent-color, 0.1);
+    border-bottom-color: rgba($accent-color, 0.2);
+    
+    .modal-title {
+      color: darken($accent-color, 5%);
+    }
+  }
+}

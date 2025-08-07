@@ -1,0 +1,158 @@
+// ==============================================
+// ARCHIVO PRINCIPAL DE ESTILOS MELARIUM
+// ==============================================
+
+// 1. Importar fuentes de Google
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+// 2. Importar variables
+@import 'styles/variables';
+
+// 3. Importar Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// 4. Importar archivo de compatibilidad
+@import 'styles/compatibility';
+
+// 5. Importar componentes
+@import 'styles/components/search';
+@import 'styles/components/filters';
+@import 'styles/components/index';
+
+// ==============================================
+// ESTILOS GLOBALES
+// ==============================================
+
+// Reset y estilos base
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $text-color;
+  background-color: $background-color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Estilos de texto y encabezados
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: $spacing-4;
+  font-family: $font-family-serif;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $secondary-color;
+}
+
+h1 {
+  font-size: $font-size-4xl;
+}
+
+h2 {
+  font-size: $font-size-3xl;
+}
+
+h3 {
+  font-size: $font-size-2xl;
+}
+
+h4 {
+  font-size: $font-size-xl;
+}
+
+h5 {
+  font-size: $font-size-lg;
+}
+
+h6 {
+  font-size: $font-size-md;
+}
+
+// Párrafos y links
+p {
+  margin-top: 0;
+  margin-bottom: $spacing-4;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color $transition-base;
+  
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+  }
+}
+
+// Contenedores principales
+.main-content {
+  min-height: calc(100vh - 80px - 300px); // Viewport height - header height - footer height
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-6;
+  
+  @media (max-width: 768px) {
+    padding: $spacing-4;
+  }
+}
+
+.section {
+  margin-bottom: $spacing-12;
+}
+
+// Utilidades de espaciado
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: $spacing-1 !important; }
+.mt-2 { margin-top: $spacing-2 !important; }
+.mt-4 { margin-top: $spacing-4 !important; }
+.mt-6 { margin-top: $spacing-6 !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: $spacing-1 !important; }
+.mb-2 { margin-bottom: $spacing-2 !important; }
+.mb-4 { margin-bottom: $spacing-4 !important; }
+.mb-6 { margin-bottom: $spacing-6 !important; }
+.ml-8 { margin-left: $spacing-8 !important; }
+
+.mx-auto { 
+  margin-left: auto !important;
+  margin-right: auto !important; 
+}
+
+// Utilidades de texto
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.text-left { text-align: left !important; }
+
+.text-primary { color: $primary-color !important; }
+.text-secondary { color: $secondary-color !important; }
+.text-success { color: $success-color !important; }
+.text-danger { color: $danger-color !important; }
+.text-warning { color: $warning-color !important; }
+
+// Clases para colores de fondo
+.bg-primary { background-color: $primary-color !important; }
+.bg-light { background-color: $light-gray !important; }
+.bg-white { background-color: $white !important; }

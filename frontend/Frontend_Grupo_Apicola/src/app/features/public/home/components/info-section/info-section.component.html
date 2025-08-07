@@ -1,0 +1,11 @@
+<section class="info-section" [ngStyle]="{'background-color': backgroundColor}">
+  <div class="info-container" [ngClass]="{'image-left': imagePosition === 'left'}">
+    <div class="text-content">
+      <h2>{{ title }}</h2>
+      <p [innerHTML]="text"></p>
+    </div>
+    <div class="image-content">
+      <img [src]="imageUrl" [alt]="title">
+    </div>
+  </div>
+</section>

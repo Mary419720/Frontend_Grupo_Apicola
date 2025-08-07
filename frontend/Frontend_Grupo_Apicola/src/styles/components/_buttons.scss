@@ -1,0 +1,226 @@
+// ========================================
+// ESTILOS DE BOTONES
+// ========================================
+@import "../variables";
+
+// Clase base para todos los botones
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $btn-padding-y $btn-padding-x;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-md;
+  font-weight: $btn-font-weight;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: $border-width solid transparent;
+  border-radius: $btn-border-radius;
+  transition: 
+    color $transition-base,
+    background-color $transition-base,
+    border-color $transition-base,
+    box-shadow $transition-base,
+    transform $transition-base;
+
+  &:focus, &:active {
+    outline: 0;
+  }
+
+  // Efecto hover sutil
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  // Icono dentro del botón
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+
+    &.icon-left {
+      margin-right: $spacing-2;
+    }
+
+    &.icon-right {
+      margin-left: $spacing-2;
+    }
+  }
+
+  // Estado disabled
+  &:disabled, &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+  }
+}
+
+// Variantes de botones
+.btn-primary {
+  color: $secondary-color;
+  background-color: $primary-color;
+  border-color: $primary-color;
+  box-shadow: 0 2px 4px rgba($primary-color, 0.3);
+
+  &:hover, &:focus {
+    background-color: $primary-dark;
+    border-color: $primary-dark;
+    box-shadow: 0 4px 8px rgba($primary-color, 0.4);
+  }
+
+  &:active {
+    background-color: darken($primary-color, 15%);
+    border-color: darken($primary-color, 15%);
+    box-shadow: 0 2px 4px rgba($primary-color, 0.3);
+  }
+}
+
+.btn-secondary {
+  color: $white;
+  background-color: $secondary-color;
+  border-color: $secondary-color;
+
+  &:hover, &:focus {
+    background-color: darken($secondary-color, 7.5%);
+    border-color: darken($secondary-color, 7.5%);
+  }
+
+  &:active {
+    background-color: darken($secondary-color, 10%);
+    border-color: darken($secondary-color, 10%);
+  }
+}
+
+.btn-accent {
+  color: $white;
+  background-color: $accent-color;
+  border-color: $accent-color;
+
+  &:hover, &:focus {
+    background-color: darken($accent-color, 7.5%);
+    border-color: darken($accent-color, 7.5%);
+  }
+
+  &:active {
+    background-color: darken($accent-color, 10%);
+    border-color: darken($accent-color, 10%);
+  }
+}
+
+.btn-outline-primary {
+  color: $primary-color;
+  background-color: transparent;
+  border-color: $primary-color;
+
+  &:hover, &:focus {
+    color: $secondary-color;
+    background-color: rgba($primary-color, 0.1);
+    box-shadow: 0 2px 4px rgba($primary-color, 0.2);
+  }
+
+  &:active {
+    background-color: rgba($primary-color, 0.2);
+  }
+}
+
+.btn-outline-secondary {
+  color: $secondary-color;
+  background-color: transparent;
+  border-color: $secondary-color;
+
+  &:hover, &:focus {
+    color: $white;
+    background-color: rgba($secondary-color, 0.1);
+  }
+
+  &:active {
+    background-color: rgba($secondary-color, 0.2);
+  }
+}
+
+.btn-text {
+  color: $primary-color;
+  background-color: transparent;
+  border-color: transparent;
+  padding: $spacing-1 $spacing-2;
+  
+  &:hover, &:focus {
+    color: $primary-dark;
+    text-decoration: underline;
+    background-color: rgba($primary-color, 0.05);
+  }
+}
+
+// Tamaños de botones
+.btn-sm {
+  padding: $spacing-1 $spacing-3;
+  font-size: $font-size-sm;
+}
+
+.btn-lg {
+  padding: $spacing-3 $spacing-5;
+  font-size: $font-size-lg;
+}
+
+// Botón con efecto de ondulación al hacer clic
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+  }
+  
+  &:active::after {
+    transform: scale(0, 0);
+    opacity: .3;
+    transition: 0s;
+  }
+}
+
+// Grupo de botones
+.btn-group {
+  display: inline-flex;
+  position: relative;
+  
+  .btn {
+    position: relative;
+    flex: 0 1 auto;
+    
+    &:not(:first-child) {
+      margin-left: -$border-width;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    
+    &:hover {
+      z-index: 1;
+    }
+  }
+}

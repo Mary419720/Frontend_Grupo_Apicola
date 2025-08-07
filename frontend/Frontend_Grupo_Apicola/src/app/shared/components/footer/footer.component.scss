@@ -1,0 +1,162 @@
+/*
+  Para una mejor experiencia visual, importa estas fuentes en tu archivo de estilos principal (styles.scss):
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400&display=swap');
+*/
+
+:host {
+  --footer-bg-elegant: #4a0e0e;      // Rojo oscuro de la imagen
+  --footer-text-elegant: #fdfbf7;   // Blanco hueso para el texto
+  --footer-title-elegant: #ffffff;   // Blanco puro para títulos
+  --footer-font-serif: 'Playfair Display', Georgia, serif;
+  --footer-font-sans: 'Roboto', Arial, sans-serif;
+}
+
+.footer-elegant {
+  background-color: var(--footer-bg-elegant);
+  color: var(--footer-text-elegant);
+  padding: 3rem 2rem 1.5rem;
+  font-family: var(--footer-font-sans);
+}
+
+.footer-elegant__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-elegant__column-group {
+  flex: 2 1 400px; // Permite que la sección de categorías ocupe más espacio
+}
+
+.footer-elegant__lists-wrapper {
+  display: flex;
+  gap: 2rem; // Espacio entre las dos listas de categorías
+}
+
+.footer-elegant__column {
+  flex: 1 1 150px;
+}
+
+.footer-elegant__title {
+  font-family: var(--footer-font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--footer-title-elegant);
+  margin-bottom: 1.5rem;
+}
+
+.footer-elegant__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 0.75rem;
+  }
+
+  a {
+    color: var(--footer-text-elegant);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 300;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.footer-elegant__social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 1rem;
+  }
+
+  .footer-elegant__social-link {
+    display: flex;
+    align-items: center;
+    color: var(--footer-text-elegant);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 1.2rem;
+      margin-right: 0.75rem;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      color: #ffffff;
+      transform: translateX(3px);
+      
+      i {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+.footer-elegant__brand-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+  gap: 1.5rem;
+}
+
+.footer-elegant__line {
+  height: 1px;
+  background-color: var(--footer-text-elegant);
+  flex-grow: 1;
+  opacity: 0.5;
+}
+
+.footer-elegant__brand-name {
+  font-family: var(--footer-font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--footer-title-elegant);
+  white-space: nowrap;
+}
+
+.footer-elegant__bottom {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+// Media query para responsividad
+@media (max-width: 768px) {
+  .footer-elegant__container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-elegant__lists-wrapper {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .footer-elegant__column-group {
+    width: 100%;
+  }
+}

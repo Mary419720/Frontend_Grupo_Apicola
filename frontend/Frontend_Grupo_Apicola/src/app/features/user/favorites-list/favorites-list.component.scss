@@ -1,0 +1,32 @@
+.favorites-container {
+  min-height: 70vh; // Asegura que el contenedor tenga una altura mínima
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state {
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  margin: auto; // Centra el cuadro de estado vacío verticalmente
+
+  h2 {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .btn-primary {
+    background-color: #f2a104; // Usando el color primario de la paleta
+    border-color: #f2a104;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken(#f2a104, 8%);
+      border-color: darken(#f2a104, 10%);
+      transform: translateY(-2px);
+    }
+  }
+}

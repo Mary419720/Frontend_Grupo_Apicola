@@ -1,0 +1,431 @@
+// ========================================
+// ESTILOS DE NAVEGACIÓN
+// ========================================
+@import "../variables";
+
+// Navbar principal
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: $spacing-3 $spacing-6;
+  background-color: $white;
+  border-bottom: $border-width solid $border-color;
+  box-shadow: $box-shadow-sm;
+  z-index: $z-index-navbar;
+  position: relative;
+  min-height: 60px;
+  
+  &.navbar-sticky {
+    position: sticky;
+    top: 0;
+  }
+  
+  &.navbar-primary {
+    background-color: $primary-color;
+    border-bottom-color: rgba($black, 0.1);
+    color: $secondary-color;
+    
+    .navbar-brand, .nav-link {
+      color: $secondary-color;
+      
+      &:hover {
+        color: darken($secondary-color, 10%);
+      }
+    }
+    
+    .navbar-toggler {
+      border-color: rgba($secondary-color, 0.2);
+      
+      &:hover {
+        background-color: rgba($secondary-color, 0.1);
+      }
+    }
+  }
+  
+  &.navbar-secondary {
+    background-color: $secondary-color;
+    border-bottom-color: rgba($black, 0.1);
+    color: $white;
+    
+    .navbar-brand, .nav-link {
+      color: rgba($white, 0.9);
+      
+      &:hover {
+        color: $white;
+      }
+    }
+    
+    .navbar-toggler {
+      border-color: rgba($white, 0.2);
+      
+      &:hover {
+        background-color: rgba($white, 0.1);
+      }
+    }
+  }
+}
+
+// Brand/logo
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-weight: $font-weight-bold;
+  color: $secondary-color;
+  margin-right: $spacing-6;
+  font-size: $font-size-xl;
+  padding: $spacing-1 0;
+  transition: color $transition-base;
+  text-decoration: none;
+  
+  img {
+    max-height: 36px;
+    margin-right: $spacing-2;
+  }
+  
+  &:hover {
+    color: $primary-color;
+    text-decoration: none;
+  }
+}
+
+// Navbar collapse y toggler para responsive
+.navbar-toggler {
+  display: none;
+  background: none;
+  border: $border-width solid $border-color;
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius;
+  cursor: pointer;
+  
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.navbar-collapse {
+  display: flex;
+  flex-basis: 100%;
+  flex-grow: 1;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: $white;
+    border-bottom: $border-width solid $border-color;
+    box-shadow: $box-shadow;
+    padding: $spacing-4;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    &.show {
+      display: flex;
+    }
+    
+    .navbar-nav {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .nav-item {
+      width: 100%;
+    }
+    
+    .nav-link {
+      padding: $spacing-2 0;
+    }
+  }
+}
+
+// Navbar nav y nav items
+.navbar-nav {
+  display: flex;
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-link {
+  display: block;
+  padding: $spacing-2 $spacing-4;
+  color: $text-color;
+  text-decoration: none;
+  transition: color $transition-base, background-color $transition-base;
+  border-radius: $border-radius;
+  
+  &:hover {
+    color: $primary-color;
+    text-decoration: none;
+  }
+  
+  &.active {
+    color: $primary-color;
+    font-weight: $font-weight-semibold;
+    background-color: rgba($primary-color, 0.1);
+  }
+  
+  &.disabled {
+    color: $text-muted;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+// Separación entre elementos
+.navbar-divider {
+  height: 1.5em;
+  width: 1px;
+  background-color: $border-color;
+  margin: 0 $spacing-4;
+}
+
+// Spacer (empuja elementos al extremo opuesto)
+.navbar-spacer {
+  flex: 1;
+}
+
+// Variante para dropdowns
+.nav-dropdown {
+  position: relative;
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    
+    &::after {
+      content: "▼";
+      font-size: $font-size-xs;
+      margin-left: $spacing-2;
+      transition: transform $transition-base;
+    }
+    
+    &:hover::after, &.show::after {
+      transform: rotate(180deg);
+    }
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    padding: $spacing-2 0;
+    margin-top: $spacing-1;
+    background-color: $white;
+    border-radius: $border-radius;
+    border: $border-width solid $border-color;
+    box-shadow: $box-shadow;
+    z-index: $z-index-dropdown;
+    
+    &.show {
+      display: block;
+      animation: dropdownFadeIn 0.2s ease;
+    }
+    
+    .dropdown-item {
+      display: block;
+      padding: $spacing-2 $spacing-4;
+      clear: both;
+      font-weight: $font-weight-normal;
+      color: $text-color;
+      text-decoration: none;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+      width: 100%;
+      text-align: left;
+      transition: background-color $transition-base, color $transition-base;
+      
+      &:hover {
+        background-color: rgba($primary-color, 0.1);
+        color: $primary-color;
+      }
+      
+      &.active {
+        background-color: $primary-color;
+        color: $white;
+      }
+      
+      &.disabled {
+        color: $text-muted;
+        pointer-events: none;
+      }
+    }
+    
+    .dropdown-divider {
+      height: 0;
+      margin: $spacing-2 0;
+      overflow: hidden;
+      border-top: 1px solid $border-color;
+    }
+  }
+}
+
+// Animación para el dropdown
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Breadcrumbs
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: $spacing-3 0;
+  margin-bottom: $spacing-4;
+  list-style: none;
+  
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    
+    & + .breadcrumb-item {
+      padding-left: $spacing-2;
+      
+      &::before {
+        display: inline-block;
+        padding-right: $spacing-2;
+        color: $text-muted;
+        content: "/";
+      }
+    }
+    
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      transition: color $transition-base;
+      
+      &:hover {
+        color: darken($primary-color, 15%);
+        text-decoration: underline;
+      }
+    }
+    
+    &.active {
+      color: $text-muted;
+    }
+  }
+}
+
+// Tabs de navegación
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  border-bottom: $border-width-md solid $border-color;
+  
+  .nav-item {
+    margin-bottom: -$border-width-md;
+    
+    + .nav-item {
+      margin-left: $spacing-2;
+    }
+  }
+  
+  .nav-link {
+    border: $border-width solid transparent;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    padding: $spacing-3 $spacing-5;
+    transition: color $transition-base, background-color $transition-base, border-color $transition-base;
+    
+    &:hover {
+      border-color: $border-color $border-color $border-color;
+    }
+    
+    &.active {
+      color: $secondary-color;
+      background-color: $white;
+      border-color: $border-color $border-color $white;
+      font-weight: $font-weight-semibold;
+    }
+    
+    &.disabled {
+      color: $text-muted;
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
+}
+
+// Tabs con variante de color primario
+.nav-tabs-primary {
+  border-bottom-color: rgba($primary-color, 0.3);
+  
+  .nav-link {
+    &:hover {
+      border-color: rgba($primary-color, 0.2);
+    }
+    
+    &.active {
+      color: darken($primary-color, 10%);
+      border-color: rgba($primary-color, 0.3) rgba($primary-color, 0.3) $white;
+    }
+  }
+}
+
+// Pills
+.nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  
+  .nav-item {
+    + .nav-item {
+      margin-left: $spacing-2;
+    }
+  }
+  
+  .nav-link {
+    border-radius: $border-radius-pill;
+    padding: $spacing-2 $spacing-4;
+    transition: color $transition-base, background-color $transition-base;
+    
+    &.active {
+      color: $white;
+      background-color: $primary-color;
+    }
+    
+    &.disabled {
+      color: $text-muted;
+    }
+  }
+}
+
+// Badges en navegación
+.nav-badge {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: $border-radius-pill;
+  background-color: $primary-color;
+  color: $white;
+  margin-left: $spacing-2;
+  
+  &.badge-danger {
+    background-color: $danger-color;
+  }
+}

@@ -1,0 +1,294 @@
+// Variables
+$primary-color: #ffc107; // Melarium Yellow
+$secondary-color: #343a40; // Dark Grey
+$danger-color: #dc3545; // Red
+$light-grey: #f8f9fa;
+$medium-grey: #dee2e6;
+$dark-grey-text: #495057;
+$white: #ffffff;
+$border-radius: 8px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// Main container for the page
+:host {
+  display: block;
+  background-color: $light-grey;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+// The main card holding the form
+.form-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: $white;
+  padding: 2.5rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    color: $secondary-color;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+  }
+}
+
+// General form styling
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+// Fieldset styling
+fieldset {
+  border: 1px solid $medium-grey;
+  border-radius: $border-radius;
+  padding: 2rem;
+
+  legend {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $secondary-color;
+    padding: 0 1rem;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+// Grid layout for form fields
+.form-grid,
+.form-grid-presentation {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+// Individual form group
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: $dark-grey-text;
+    font-size: 0.9rem;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid $medium-grey;
+    border-radius: $border-radius;
+    background-color: $white;
+    font-size: 1rem;
+    color: $dark-grey-text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .required {
+    color: $danger-color;
+    margin-left: 2px;
+  }
+}
+
+.form-group-full-width {
+  grid-column: 1 / -1;
+}
+
+// Checkbox styling
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0.75rem;
+    width: 18px;
+    height: 18px;
+    accent-color: $primary-color;
+  }
+}
+
+// Image gallery styling
+.image-preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.image-preview-item {
+  position: relative;
+  border: 1px solid $medium-grey;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .btn-delete-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba($danger-color, 0.8);
+    color: $white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $danger-color;
+    }
+  }
+}
+
+// Presentation section styling
+.presentation-item {
+  border: 1px solid lighten($primary-color, 30%);
+  background-color: lighten($primary-color, 38%);
+  padding: 1.5rem;
+  border-radius: $border-radius;
+  margin-top: 2rem;
+
+  h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: $secondary-color;
+  }
+}
+
+// Button styles
+.btn, button {
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  text-align: center;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: $secondary-color;
+  &:hover:not(:disabled) {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.btn-danger {
+  background-color: $danger-color;
+  color: $white;
+   &:hover:not(:disabled) {
+    background-color: darken($danger-color, 10%);
+  }
+}
+
+.btn-cancel {
+  background-color: $medium-grey;
+  color: $dark-grey-text;
+   &:hover:not(:disabled) {
+    background-color: darken($medium-grey, 10%);
+  }
+}
+
+.btn-add-presentation {
+    background-color: transparent;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+    display: block;
+    margin: 1.5rem auto 0;
+    &:hover:not(:disabled) {
+        background-color: $primary-color;
+        color: $secondary-color;
+    }
+}
+
+.btn-delete-presentation {
+    background-color: transparent;
+    color: $danger-color;
+    border: none;
+    padding: 0.25rem;
+    font-size: 0.9rem;
+    font-weight: normal;
+    &:hover:not(:disabled) {
+        text-decoration: underline;
+        transform: none;
+    }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid $medium-grey;
+  padding-top: 2rem;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+  .form-card {
+    padding: 1.5rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    .btn, button {
+      width: 100%;
+    }
+  }
+}

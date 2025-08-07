@@ -1,0 +1,208 @@
+<div class="product-details-container">
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando información del producto...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error && !loading" class="error-container">
+    <lucide-icon name="info" class="error-icon"></lucide-icon>
+    <p>{{ error }}</p>
+    <button class="btn-primary" (click)="goBack()">Volver a la lista de productos</button>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="product && !loading" class="product-content">
+    <div class="header-actions">
+      <h1>Detalles del Producto</h1>
+      <div class="action-buttons">
+        <button class="btn-secondary" (click)="goBack()">
+          <lucide-icon name="arrow-left"></lucide-icon>
+          Volver
+        </button>
+        <button class="btn-primary" (click)="goToEdit()">
+          <lucide-icon name="file-pen-line"></lucide-icon>
+          Editar Producto
+        </button>
+      </div>
+    </div>
+
+    <div class="product-grid">
+      <!-- Columna izquierda: Galería de imágenes -->
+      <div class="product-images">
+        <div class="main-image-container">
+          <img 
+            [src]="product.imagenes && product.imagenes.length > 0 ? product.imagenes[selectedImageIndex] : 'assets/images/image.png'" 
+            [alt]="product.nombre" 
+            class="main-image"
+            onerror="this.src='assets/images/image.png'; this.onerror='';">
+        </div>
+        <div class="thumbnail-container" *ngIf="product.imagenes && product.imagenes.length > 1">
+          <div 
+            *ngFor="let image of product.imagenes; let i = index" 
+            class="thumbnail"
+            [class.active]="i === selectedImageIndex"
+            (click)="selectImage(i)">
+            <img 
+              [src]="image" 
+              [alt]="product.nombre + ' imagen ' + (i+1)" 
+              onerror="this.src='assets/images/image.png'; this.onerror='';">
+          </div>
+        </div>
+        <p *ngIf="!product.imagenes || product.imagenes.length === 0" class="no-images">
+          Este producto no tiene imágenes disponibles.
+        </p>
+      </div>
+
+      <!-- Columna derecha: Información del producto -->
+      <div class="product-info">
+        <div class="info-card">
+          <h1>{{ product.nombre }}</h1>
+          <div class="info-badge">
+            <span class="status-active" *ngIf="product.activo">Activo</span>
+            <span class="status-inactive" *ngIf="!product.activo">Inactivo</span>
+          </div>
+          <div class="info-row">
+            <div class="label">Descripción:</div>
+            <div class="value">{{ product.descripcion || 'No disponible' }}</div>
+          </div>
+          <div class="info-row">
+            <span class="label">Categoría:</span>
+            <span class="value">{{ category || 'No especificada' }}</span>
+          </div>
+          <div class="info-row" *ngIf="subcategory">
+            <span class="label">Subcategoría:</span>
+            <span class="value">{{ subcategory }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Tipo:</span>
+            <span class="value">{{ product.tipo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Estado Físico:</span>
+            <span class="value">{{ product.estado_fisico || 'No especificado' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Estado:</span>
+            <span class="status-badge" [ngClass]="product.activo ? 'status-active' : 'status-inactive'">
+              {{ product.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </div>
+          <div class="info-row dates">
+            <div>
+              <span class="label">Fecha de Creación:</span>
+              <span class="value">{{ formatDate(product.fecha_creacion) }}</span>
+            </div>
+            <div>
+              <span class="label">Última Actualización:</span>
+              <span class="value">{{ formatDate(product.fecha_actualizacion) }}</span>
+            </div>
+          </div>
+          <div class="description" *ngIf="product.descripcion">
+            <h3>Descripción</h3>
+            <p>{{ product.descripcion }}</p>
+          </div>
+        </div>
+        <!-- Presentaciones del producto -->
+        <div class="info-card presentations-card">
+          <h3>
+            <lucide-icon name="package"></lucide-icon>
+            Presentaciones Disponibles
+            <span class="presentation-count">{{ product.presentaciones.length }}</span>
+          </h3>
+          <div class="no-presentations" *ngIf="!product.presentaciones || product.presentaciones.length === 0">
+            <lucide-icon name="package-x" size="32"></lucide-icon>
+            <p>Este producto no tiene presentaciones registradas.</p>
+          </div>
+          <div class="presentations-table-container" *ngIf="product.presentaciones && product.presentaciones.length > 0">
+            <table class="presentations-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Formato</th>
+                  <th>Capacidad</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let presentation of product.presentaciones">
+                  <td><span class="presentation-name">{{ presentation.sku }}</span></td>
+                  <td>{{ presentation.formato }}</td>
+                  <td>{{ presentation.capacidad }}</td>
+                  <td>{{ presentation.precio_venta | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td>
+                    <span [ngClass]="{
+                      'low-stock': presentation.stock <= (presentation.stock_minimo || 5),
+                      'medium-stock': presentation.stock > (presentation.stock_minimo || 5) && presentation.stock <= (presentation.stock_minimo || 5) * 2,
+                      'high-stock': presentation.stock > (presentation.stock_minimo || 5) * 2
+                    }">
+                      {{ presentation.stock }}
+                    </span>
+                    <span *ngIf="presentation.stock_minimo" class="stock-min">(Min: {{ presentation.stock_minimo }})</span>
+                  </td>
+                  <td>
+                    <span class="status-badge" [ngClass]="presentation.activo !== false ? 'status-active' : 'status-inactive'">
+                      {{ presentation.activo !== false ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Detalles adicionales de presentaciones -->
+          <div class="presentation-details" *ngIf="product.presentaciones && product.presentaciones.length > 0">
+            <div class="accordion" *ngFor="let presentation of product.presentaciones; let i = index">
+              <div class="accordion-header">
+                <button class="accordion-toggle" 
+                        [attr.aria-expanded]="isExpanded(i)" 
+                        [attr.aria-controls]="'presentation-panel-' + i"
+                        (click)="toggleAccordion(i)">
+                  <span>{{ presentation.formato }} - {{ presentation.capacidad }}</span>
+                  <lucide-icon name="chevron-down" [class.rotated]="isExpanded(i)"></lucide-icon>
+                </button>
+              </div>
+              <div class="accordion-content" 
+                   [attr.id]="'presentation-panel-' + i"
+                   [class.active]="isExpanded(i)">
+                <div class="info-grid">
+                  <div class="info-item" *ngIf="presentation.precio_compra">
+                    <span class="label">Precio de Compra:</span>
+                    <span class="value">{{ presentation.precio_compra | currency:'MXN':'symbol':'1.2-2' }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="presentation.lote">
+                    <span class="label">Lote:</span>
+                    <span class="value">{{ presentation.lote }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="presentation.fecha_ingreso">
+                    <span class="label">Fecha de Ingreso:</span>
+                    <span class="value">{{ formatDate(presentation.fecha_ingreso) }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="presentation.fecha_vencimiento">
+                    <span class="label">Fecha de Vencimiento:</span>
+                    <span class="value">{{ formatDate(presentation.fecha_vencimiento) }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="presentation.proveedor">
+                    <span class="label">Proveedor:</span>
+                    <span class="value">{{ presentation.proveedor }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="presentation.ubicacion">
+                    <span class="label">Ubicación:</span>
+                    <span class="value">{{ presentation.ubicacion }}</span>
+                  </div>
+                  <div class="info-item full-width" *ngIf="presentation.observaciones">
+                    <span class="label">Observaciones:</span>
+                    <span class="value">{{ presentation.observaciones }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

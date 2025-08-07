@@ -1,0 +1,115 @@
+<header class="main-header" [ngClass]="{ 'mobile-menu-open': isMobileMenuOpen }">
+  <div class="header-container">
+    <!-- Logo -->
+    <div class="logo-container">
+      <a routerLink="/" class="logo">
+        <img src="assets/images/image.png" alt="Melarium Logo">
+        <span>Melarium</span>
+      </a>
+    </div>
+
+    <!-- Navegación Principal -->
+    <section class="navigation-wrapper">
+      <!-- Diagnóstico del token JWT -->
+      <div class="diagnostic-panel" *ngIf="showDebug" role="dialog" aria-labelledby="diagnosticTitle">
+        <div class="diagnostic-content">
+          <h3 id="diagnosticTitle">Diagnóstico del Token JWT</h3>
+          <pre>{{ diagnosticMessage }}</pre>
+          <button type="button" class="close-btn" (click)="showDebug = false" aria-label="Cerrar diagnóstico">Cerrar</button>
+        </div>
+      </div>
+
+      <nav class="main-nav" role="navigation" aria-label="Menú principal">
+        <ul class="nav-list">
+          <li class="nav-item" *ngFor="let link of navLinks">
+            <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: link.exact}">{{ link.label }}</a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+
+    <!-- Acciones de Usuario y Menú Móvil -->
+    <div class="header-actions">
+      <ng-container *ngIf="isAuthenticated$ | async; else guestActions">
+        <!-- Acciones para usuario autenticado -->
+        <div class="user-info" *ngIf="!isMobileMenuOpen && (user$ | async) as user">
+          <a routerLink="/admin" *ngIf="user.rol === 'administrador'" class="admin-link" title="Dashboard" aria-label="Panel de administración">
+            <lucide-icon name="LayoutDashboard" aria-hidden="true"></lucide-icon>
+          </a>
+          <a routerLink="/favorites" class="favorites-link" title="Mis Favoritos" aria-label="Ver mis favoritos">
+            <lucide-icon name="Heart" aria-hidden="true"></lucide-icon>
+          </a>
+          <!-- Depuración y mejora del nombre de usuario -->
+          <span class="welcome-message">
+            Hola, 
+            <ng-container *ngIf="user?.name">{{ user.name | slice:0:10 }}{{ user.name.length > 10 ? '...' : '' }}</ng-container>
+            <ng-container *ngIf="!user?.name && user?.email">[{{ user.email | slice:0:10 }}{{ user.email.length > 10 ? '...' : '' }}]</ng-container>
+            <ng-container *ngIf="!user?.name && !user?.email">Usuario</ng-container>
+            <!-- Debug btn -->
+            <button class="debug-btn" (click)="showDebug = !showDebug" *ngIf="diagnosticMessage" title="Mostrar/ocultar diagnóstico">
+              ℹ️
+            </button>
+          </span>
+          <button type="button" (click)="logout()" class="auth-button" aria-label="Cerrar sesión">
+            <lucide-icon name="LogOut" aria-hidden="true"></lucide-icon> 
+            <span class="button-text">Cerrar Sesión</span>
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-template #guestActions>
+        <!-- Acciones para visitante -->
+        <div class="guest-controls">
+          <button type="button" (click)="navigateToLogin()" class="header-button">Iniciar Sesión</button>
+          <button type="button" (click)="navigateToRegister()" class="header-button-register">Registrarse</button>
+        </div>
+      </ng-template>
+
+      <!-- Botón de Menú Hamburguesa (solo visible en móvil) -->
+      <button 
+        class="mobile-menu-toggle" 
+        (click)="toggleMobileMenu()" 
+        aria-label="Menú de navegación" 
+        [attr.aria-expanded]="isMobileMenuOpen"
+        type="button">
+        <lucide-icon [name]="isMobileMenuOpen ? 'X' : 'Menu'" aria-hidden="true"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú desplegable para móvil -->
+  <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+  <nav class="mobile-nav-menu" role="navigation" aria-label="Menú móvil">
+    <ul class="mobile-nav-list">
+      <!-- Enlaces principales utilizando el array navLinks -->
+      <li *ngFor="let link of navLinks">
+        <a [routerLink]="link.path" (click)="toggleMobileMenu()">{{ link.label }}</a>
+      </li>
+      
+      <!-- Acciones para visitante -->
+      <ng-container *ngIf="!(isAuthenticated$ | async)">
+        <li><button type="button" class="mobile-auth-button" (click)="navigateToLogin()">
+          <lucide-icon name="LogIn" aria-hidden="true"></lucide-icon> Iniciar Sesión
+        </button></li>
+        <li><button type="button" class="mobile-auth-button" (click)="navigateToRegister()">
+          <lucide-icon name="UserPlus" aria-hidden="true"></lucide-icon> Registrarse
+        </button></li>
+      </ng-container>
+
+      <!-- Enlaces para usuarios autenticados -->
+      <ng-container *ngIf="isAuthenticated$ | async">
+        <!-- Eliminado divisor redundante -->
+        <li><a routerLink="/favorites" (click)="toggleMobileMenu()">
+          <lucide-icon name="Heart" aria-hidden="true"></lucide-icon> Mis Favoritos
+        </a></li>
+        <li *ngIf="(user$ | async)?.rol === 'administrador'"><a routerLink="/admin" (click)="toggleMobileMenu()">
+          <lucide-icon name="LayoutDashboard" aria-hidden="true"></lucide-icon> Dashboard
+        </a></li>
+        <li><button type="button" class="mobile-logout" (click)="logout()">
+          <lucide-icon name="LogOut" aria-hidden="true"></lucide-icon> Cerrar Sesión
+        </button></li>
+      </ng-container>
+    </ul>
+  </nav>
+  </div>
+</header>

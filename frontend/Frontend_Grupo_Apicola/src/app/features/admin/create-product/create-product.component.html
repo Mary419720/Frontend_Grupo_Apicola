@@ -1,0 +1,193 @@
+<div class="create-product-container">
+  <h2 class="main-title">Registrar Nuevo Producto</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Cargando datos...</p>
+  </div>
+  <div *ngIf="errorMessage" class="error-message-global">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <form *ngIf="!isLoading && !errorMessage" [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+
+    <!-- 1. Detalles del Producto -->
+    <div class="form-card">
+      <h3 class="card-header">1. Detalles del Producto</h3>
+      <div class="card-body form-grid">
+        
+        <div class="form-field">
+          <label for="nombre">Nombre del Producto</label>
+          <input id="nombre" formControlName="nombre" type="text" placeholder="Ej. Miel de Abeja Multifloral">
+          <div *ngIf="productForm.get('nombre')?.invalid && productForm.get('nombre')?.touched" class="error-message">
+            El nombre es requerido.
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="codigo">Código o SKU Principal</label>
+          <input id="codigo" formControlName="codigo" type="text" placeholder="Ej. MIEL-MULTI-500">
+          <div *ngIf="productForm.get('codigo')?.invalid && productForm.get('codigo')?.touched" class="error-message">
+            El código es requerido.
+          </div>
+        </div>
+
+        <div class="form-field form-field-full-width">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="4" placeholder="Describe las características principales del producto..."></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="categoria_id">Categoría</label>
+          <select id="categoria_id" formControlName="categoria_id">
+            <option value="" disabled>Selecciona una categoría</option>
+            <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="subcategoria_id">Subcategoría</label>
+          <select id="subcategoria_id" formControlName="subcategoria_id" [disabled]="!subcategories.length">
+            <option value="" disabled>Selecciona una subcategoría</option>
+            <option *ngFor="let sub of subcategories" [value]="sub._id">{{ sub.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" formControlName="tipo">
+            <option value="" disabled>Selecciona un tipo</option>
+            <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+        
+        <div class="form-field">
+          <label for="estado_fisico">Estado Físico</label>
+          <select id="estado_fisico" formControlName="estado_fisico">
+            <option>Sólido</option>
+            <option>Líquido</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <div class="form-field form-field-checkbox">
+          <label for="activo">
+            <input id="activo" formControlName="activo" type="checkbox">
+            Producto Activo
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Imágenes del Producto -->
+    <div class="form-card">
+      <h3 class="card-header">2. Imágenes del Producto</h3>
+      <div class="card-body">
+        <div class="form-field">
+          <label for="images">Cargar Imágenes</label>
+          <input id="images" type="file" multiple (change)="onFileSelect($event)" class="file-input">
+          <div class="image-preview-container">
+            <div *ngFor="let url of imagePreviews" class="image-preview">
+              <img [src]="url" alt="Vista previa de imagen">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Presentaciones -->
+    <div class="form-card" formArrayName="presentaciones">
+      <h3 class="card-header">3. Presentaciones</h3>
+      <div class="card-body">
+        <div *ngFor="let presentationGroup of presentaciones.controls; let i=index" [formGroupName]="i" class="presentation-item">
+          <div class="presentation-header">
+            <h4>Presentación {{ i + 1 }}</h4>
+            <button type="button" (click)="removePresentation(i)" class="btn-icon remove-btn" *ngIf="presentaciones.length > 1" title="Eliminar presentación">
+              <lucide-icon name="Trash2" size="18"></lucide-icon>
+            </button>
+          </div>
+          <div class="form-grid-presentation">
+            <div class="form-field">
+              <label for="sku-{{i}}">SKU</label>
+              <input id="sku-{{i}}" formControlName="sku" type="text">
+            </div>
+            <div class="form-field">
+              <label for="formato-{{i}}">Formato</label>
+              <input id="formato-{{i}}" formControlName="formato" type="text" placeholder="Ej. Frasco de vidrio">
+            </div>
+            <div class="form-field">
+              <label for="capacidad-{{i}}">Capacidad</label>
+              <input id="capacidad-{{i}}" formControlName="capacidad" type="text" placeholder="Ej. 500g">
+            </div>
+            <div class="form-field">
+              <label for="precio_venta-{{i}}">Precio Venta</label>
+              <input id="precio_venta-{{i}}" formControlName="precio_venta" type="number" min="0">
+            </div>
+            <div class="form-field">
+              <label for="precio_compra-{{i}}">Precio Compra</label>
+              <input id="precio_compra-{{i}}" formControlName="precio_compra" type="number" min="0">
+            </div>
+            <div class="form-field">
+              <label for="stock-{{i}}">Stock</label>
+              <input id="stock-{{i}}" formControlName="stock" type="number" min="0">
+            </div>
+            <div class="form-field">
+              <label for="stock_minimo-{{i}}">Stock Mínimo</label>
+              <input id="stock_minimo-{{i}}" formControlName="stock_minimo" type="number" min="0">
+            </div>
+            <div class="form-field">
+              <label [for]="'lote_' + i">Lote</label>
+              <input [id]="'lote_' + i" type="text" formControlName="lote" placeholder="Ej. LT-2024-01">
+            </div>
+
+            <div class="form-field">
+              <label [for]="'fecha_vencimiento_' + i">Fecha Vencimiento</label>
+              <input [id]="'fecha_vencimiento_' + i" type="date" formControlName="fecha_vencimiento">
+            </div>
+
+            <div class="form-field">
+              <label [for]="'fecha_ingreso_' + i">Fecha Ingreso</label>
+              <input [id]="'fecha_ingreso_' + i" type="date" formControlName="fecha_ingreso">
+            </div>
+
+            <div class="form-field full-width">
+              <label [for]="'proveedor_' + i">Proveedor</label>
+              <input [id]="'proveedor_' + i" type="text" formControlName="proveedor">
+            </div>
+
+            <div class="form-field full-width">
+              <label [for]="'ubicacion_' + i">Ubicación</label>
+              <input [id]="'ubicacion_' + i" type="text" formControlName="ubicacion">
+            </div>
+
+            <div class="form-field form-field-full-width">
+              <label [for]="'observaciones_' + i">Observaciones</label>
+              <textarea [id]="'observaciones_' + i" formControlName="observaciones" rows="4"></textarea>
+            </div>
+          </div>
+
+          <div class="form-field form-field-checkbox">
+            <label for="activo-{{i}}">
+              <input id="activo-{{i}}" formControlName="activo" type="checkbox">
+              Presentación Activa
+            </label>
+          </div>
+        </div>
+        <div class="add-presentation-action">
+          <button type="button" (click)="addPresentation()" class="btn btn-secondary">
+            <lucide-icon name="PlusCircle" size="16"></lucide-icon>
+            <span>Añadir Otra Presentación</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones del Formulario -->
+    <div class="form-actions">
+      <button type="button" routerLink="/admin/manage-products" class="btn btn-cancel">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isLoading">
+        <lucide-icon name="CheckCircle" size="20"></lucide-icon>
+        <span>Guardar Producto</span>
+      </button>
+    </div>
+  </form>
+</div>

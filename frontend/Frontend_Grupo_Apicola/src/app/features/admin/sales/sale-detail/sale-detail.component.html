@@ -1,0 +1,103 @@
+<div class="sale-detail-container">
+  <div *ngIf="isLoading" class="alert-message info">Cargando detalles de la venta...</div>
+  <div *ngIf="errorLoading && !isLoading" class="alert-message danger">Error al cargar los detalles de la venta.</div>
+  <div *ngIf="!isLoading && !sale && !errorLoading" class="alert-message warning">No se encontraron datos para esta venta.</div>
+
+  <div *ngIf="sale && !isLoading && !errorLoading">
+    <header class="detail-header">
+      <h2>Detalle de Venta</h2>
+      <div class="actions-group">
+        <button routerLink="/admin/sales" class="btn-action btn-secondary">Volver al Listado</button>
+        <button (click)="downloadComprobante()" class="btn-action btn-primary">Descargar PDF</button>
+      </div>
+    </header>
+
+    <!-- Información General -->
+    <section class="info-card">
+      <h3 class="card-title">Información General</h3>
+      <div class="info-grid">
+        <div class="info-item"><p><strong>Folio de Venta</strong>{{ sale._id }}</p></div>
+        <div class="info-item"><p><strong>Fecha</strong>{{ sale.fecha | date:'dd/MM/yyyy HH:mm' }}</p></div>
+        <div class="info-item"><p><strong>Método de Pago</strong>{{ sale.metodo_pago }}</p></div>
+        <div class="info-item"><p><strong>Estado</strong><span class="status-badge" [ngClass]="'status-' + (sale.estado?.toLowerCase() || 'default')">{{ sale.estado || 'No definido' }}</span></p></div>
+      </div>
+    </section>
+
+    <!-- Datos del Cliente -->
+    <section class="info-card">
+      <h3 class="card-title">Cliente</h3>
+      <div class="info-grid">
+        <div class="info-item"><p><strong>Nombre</strong>{{ sale.cliente.nombre }}</p></div>
+        <div class="info-item"><p><strong>Tipo</strong>{{ sale.cliente.tipo }}</p></div>
+        <div class="info-item" *ngIf="sale.cliente.email"><p><strong>Email</strong>{{ sale.cliente.email }}</p></div>
+      </div>
+    </section>
+
+    <ng-container *ngIf="sale.totales as totals">
+      <ng-container *ngIf="sale.productos as products">
+        <ng-container *ngIf="products.length > 0">
+          <!-- Productos Vendidos -->
+          <section class="info-card">
+            <h3 class="card-title">Productos Vendidos</h3>
+            <table class="products-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th style="text-align: center;">Cantidad</th>
+                  <th style="text-align: right;">Precio Unit.</th>
+                  <th style="text-align: right;">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of products">
+                  <td>
+                    <div class="product-name">{{ item.nombre }}</div>
+                    <div class="product-unit">{{ item.unidad }}</div>
+                  </td>
+                  <td style="text-align: center;">{{ item.cantidad }}</td>
+                  <td style="text-align: right;">{{ item.precio_unitario | currency:totals.moneda:'symbol':'1.2-2' }}</td>
+                  <td style="text-align: right;">{{ item.subtotal_producto | currency:totals.moneda:'symbol':'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Totales y Notas -->
+          <div class="info-grid" style="gap: 1.5rem; align-items: flex-start;">
+            <div *ngIf="sale.notas" class="info-card notes-card" style="flex: 2;">
+              <h3 class="card-title">Notas Adicionales</h3>
+              <p>{{ sale.notas }}</p>
+            </div>
+
+            <div class="info-card" style="flex: 1;">
+              <h3 class="card-title">Resumen de Totales</h3>
+              <div class="totals-section">
+                <div class="totals-summary">
+                  <div class="total-item">
+                    <span class="label">Subtotal</span>
+                    <span class="value">{{ calculateProductsSubtotal(products) | currency:totals.moneda:'symbol':'1.2-2' }}</span>
+                  </div>
+                  <div *ngIf="totals.descuento && totals.descuento > 0" class="total-item">
+                    <span class="label">Descuento</span>
+                    <span class="value danger">- {{ totals.descuento | currency:totals.moneda:'symbol':'1.2-2' }}</span>
+                  </div>
+                  <div *ngIf="totals.iva && totals.iva > 0" class="total-item">
+                    <span class="label">IVA (16%)</span>
+                    <span class="value">{{ totals.iva | currency:totals.moneda:'symbol':'1.2-2' }}</span>
+                  </div>
+                  <div class="total-item grand-total">
+                    <span class="label">Total</span>
+                    <span class="value">{{ totals.total | currency:totals.moneda:'symbol':'1.2-2' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+  </div>
+</div>
+
+

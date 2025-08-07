@@ -1,0 +1,35 @@
+@import '../_auth.styles.scss';
+
+.input-wrapper {
+  position: relative;
+  width: 100%; // Forzar al contenedor a ocupar todo el ancho
+
+  .toggle-password {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 1rem;
+    margin: auto 0;
+    height: fit-content; // Asegura que el cálculo de 'margin: auto' funcione bien
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-secondary, #6c757d);
+    padding: 0.25rem;
+
+    &:focus {
+      outline: none;
+    }
+
+    lucide-icon {
+      display: block;
+    }
+  }
+  
+  .form-control {
+    width: 100%; // Forzar también al input a ocupar todo el ancho
+    box-sizing: border-box; // Asegura que el padding no afecte el ancho total
+    padding-right: 3rem; // Espacio para el icono
+  }
+  
+}

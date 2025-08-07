@@ -1,0 +1,50 @@
+// ========================================
+// ARCHIVO DE COMPATIBILIDAD DE VARIABLES
+// ========================================
+// Este archivo proporciona variables para mantener compatibilidad
+// con código existente y evitar errores de compilación
+
+@import "./variables";
+
+
+// Asegurarse de que todas las variables estén disponibles en el contexto global
+// para evitar problemas de importación en componentes anidados
+
+// Alias para variables existentes
+$card-bg: $card-background;
+$text-muted: #6c757d;
+$black: #000000;
+
+// Otras variables que pudieran estar faltando
+$input-bg: $white;
+$input-color: $text-color;
+$input-border-width: $border-width;
+$input-placeholder-color: $gray-500;
+
+// Z-index
+$z-index-navbar: 990; // Añadido para la barra de navegación
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-toast: 1080;
+
+$box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+$box-shadow-focus: 0 0 0 0.2rem rgba($primary-color, 0.25);
+$box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+$modal-backdrop-bg: rgba(0, 0, 0, 0.5);
+$modal-header-border-color: $gray-200;
+$modal-footer-border-color: $gray-200;
+$modal-content-border-color: transparent;
+
+$nav-tabs-border-color: $gray-300;
+$nav-link-hover-color: $primary-dark;
+
+$table-bg: $white;
+$table-accent-bg: rgba($primary-color, 0.03);
+$table-hover-bg: rgba($primary-color, 0.07);
+
+// Agrega aquí más variables según sea necesario

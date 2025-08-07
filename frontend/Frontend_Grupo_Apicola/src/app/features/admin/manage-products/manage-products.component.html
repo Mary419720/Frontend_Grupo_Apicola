@@ -1,0 +1,178 @@
+<div class="admin-container">
+  <app-notification-container></app-notification-container>
+
+  <!-- Encabezado y controles principales -->
+  <div class="admin-header">
+    <h1 class="admin-title">Gestión de Productos</h1>
+        <div class="flex items-center">
+      <button (click)="exportToExcel()" class="btn btn-secondary" [disabled]="isExporting">
+        <ng-container *ngIf="!isExporting; else exportingTpl">
+          <lucide-icon name="download" class="mr-2"></lucide-icon>
+          Descargar Excel
+        </ng-container>
+        <ng-template #exportingTpl>
+          <span class="loading loading-spinner loading-sm mr-2"></span>
+          Exportando...
+        </ng-template>
+      </button>
+      <button class="btn-primary ml-8" routerLink="/admin/create-product" [disabled]="(loading$ | async)?.list">
+        <lucide-icon name="plus-circle" size="18"></lucide-icon>
+        <span>Registrar Nuevo Producto</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros de búsqueda -->
+  <div class="search-card">
+    <div class="filter-container">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar por nombre, código..."
+          [formControl]="searchControl"
+        />
+        <lucide-icon
+          *ngIf="!(loading$ | async)?.list; else searchSpinner"
+          name="search"
+          size="20"
+          class="search-icon">
+        </lucide-icon>
+        <ng-template #searchSpinner>
+          <lucide-icon name="loader-circle" size="20" class="search-icon spin"></lucide-icon>
+        </ng-template>
+      </div>
+
+      <select
+        class="filter-select"
+        [(ngModel)]="categoryFilter"
+        (change)="applyFiltersAndLoad()">
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let category of categories" [value]="category._id">{{ category.nombre }}</option>
+      </select>
+
+      <button class="btn-reload" (click)="applyFiltersAndLoad()" [disabled]="(loading$ | async)?.list">
+        <lucide-icon [name]="((loading$ | async)?.list) ? 'loader-circle' : 'refresh-cw'" [class.spin]="((loading$ | async)?.list)" size="18"></lucide-icon>
+        <span>{{ ((loading$ | async)?.list) ? 'Cargando...' : 'Recargar' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor de datos y estado -->
+  <ng-container *ngIf="{
+    products: products$ | async,
+    pagination: pagination$ | async,
+    loading: loading$ | async
+  } as data">
+
+    <!-- Indicador de Carga Global -->
+    <div *ngIf="data.loading?.list" class="loading-overlay">
+      <div class="spinner">
+        <lucide-icon name="loader-circle" size="32" class="spin"></lucide-icon>
+      </div>
+      <p>Cargando productos...</p>
+    </div>
+
+    <!-- Mensaje de no resultados -->
+    <div *ngIf="!data.loading?.list && data.products && data.products.length === 0" class="empty-card">
+      <lucide-icon name="search-x" size="48"></lucide-icon>
+      <h3>No se encontraron productos</h3>
+      <p>No hay productos que coincidan con los criterios de búsqueda.</p>
+      <p>Intenta con otros términos o categorías.</p>
+    </div>
+
+    <!-- Tabla de Productos (solo si hay productos) -->
+    <div *ngIf="data.products && data.products.length > 0" class="data-card">
+      <div class="table-container">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th class="image-column">Imagen</th>
+              <th class="name-column">Nombre</th>
+              <th class="code-column">Código</th>
+              <th class="category-column">Categoría</th>
+              <th class="presentations-column">Presentaciones</th>
+              <th class="status-column">Estado</th>
+              <th class="actions-column">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of data.products; trackBy: trackByProductId">
+              <td class="image-column">
+                <div class="product-image-wrapper">
+                  <img *ngIf="product.imagenes && product.imagenes.length > 0"
+                       [src]="getFullImageUrl(product.imagenes[0])"
+                       [alt]="product.nombre"
+                       class="product-image"
+                       loading="lazy"
+                       onerror="this.src='assets/images/placeholder-product.jpg'; this.onerror='';" />
+                  <div *ngIf="!product.imagenes || product.imagenes.length === 0" class="no-image">
+                    <lucide-icon name="image-off" size="24"></lucide-icon>
+                  </div>
+                </div>
+              </td>
+              <td class="name-column">{{ product.nombre }}</td>
+              <td class="code-column"><span class="code-badge">{{ product.codigo }}</span></td>
+              <td class="category-column">{{ getCategoryName(product.categoria_id) }}</td>
+              <td class="presentations-column">
+                <span *ngIf="product.presentaciones && product.presentaciones.length > 0" class="presentations-badge">
+                  {{ product.presentaciones.length }} presentaciones
+                </span>
+                <span *ngIf="!product.presentaciones || product.presentaciones.length === 0" class="no-presentations-badge">
+                  Sin presentaciones
+                </span>
+              </td>
+              <td class="status-column">
+                <span class="status-badge" [ngClass]="{'status-active': product.activo, 'status-inactive': !product.activo}">
+                  {{ product.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="actions-column">
+                <div class="actions-wrapper">
+                  <button class="action-button" title="Editar Producto" [routerLink]="['/admin/edit-product', product._id]">
+                    <lucide-icon name="edit" size="18"></lucide-icon>
+                  </button>
+                  <button class="action-button" title="Ver Detalles" [routerLink]="['/admin/product-details', product._id]">
+                    <lucide-icon name="eye" size="18"></lucide-icon>
+                  </button>
+                  <button
+                    class="action-button delete"
+                    title="Eliminar Producto"
+                    (click)="confirmDelete(product)"
+                    [disabled]="deletingProductId === product._id">
+                    <lucide-icon
+                      [name]="deletingProductId === product._id ? 'loader-circle' : 'trash-2'"
+                      size="18"
+                      [class.spin]="deletingProductId === product._id">
+                    </lucide-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Controles de paginación (solo si hay paginación) -->
+      <div *ngIf="data.pagination && data.pagination.totalPages > 1" class="pagination-controls">
+        <div class="pagination-info">
+          Mostrando {{ (data.pagination.currentPage - 1) * data.pagination.limit + 1 }} a {{ (data.pagination.currentPage - 1) * data.pagination.limit + data.products.length }} de {{ data.pagination.total }} productos
+        </div>
+        <div class="pagination-buttons">
+          <button [disabled]="data.pagination.currentPage === 1" (click)="loadPage(data.pagination.currentPage - 1)" class="pagination-arrow">
+            <lucide-icon name="chevron-left" size="18"></lucide-icon>
+          </button>
+          <div class="page-numbers">
+            <button *ngFor="let page of getPageNumbers(data.pagination.currentPage, data.pagination.totalPages)" (click)="loadPage(page)" class="page-number" [class.active]="data.pagination.currentPage === page">
+              {{ page }}
+            </button>
+          </div>
+          <button [disabled]="data.pagination.currentPage === data.pagination.totalPages" (click)="loadPage(data.pagination.currentPage + 1)" class="pagination-arrow">
+            <lucide-icon name="chevron-right" size="18"></lucide-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

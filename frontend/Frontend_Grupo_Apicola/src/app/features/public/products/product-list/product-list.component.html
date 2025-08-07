@@ -1,0 +1,145 @@
+<!-- Banner principal del catálogo de productos -->
+<div class="container-fluid px-0">
+  <!-- Banner con título y búsqueda -->
+  <div class="catalog-banner text-center">
+    <div class="row">
+            <div class="col-md-10 mx-auto">
+        <h1>Catálogo de Productos</h1>
+        <p>Descubre nuestra selección de productos apícolas de la más alta calidad</p>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+            <div class="search-container">
+              <input type="text" class="search-input" placeholder="Buscar por nombre, tipo o categoría..." [formControl]="searchControl">
+              <button class="search-button">
+                <lucide-icon name="search"></lucide-icon>
+              </button>
+            </div>
+            <button class="filter-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters" title="Abrir filtros">
+              <lucide-icon name="sliders-horizontal" size="20"></lucide-icon>
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container py-4">
+    <div class="row">
+      <!-- Lista de productos (ahora a ancho completo) -->
+      <div class="col-12">
+        <!-- Contenedor principal con datos del store -->
+        <ng-container *ngIf="{ 
+            products: products$ | async, 
+            pagination: pagination$ | async, 
+            loading: loading$ | async 
+          } as data">
+
+          <!-- Estado de carga -->
+          <div *ngIf="data.loading?.list" class="d-flex justify-content-center my-5">
+            <div class="spinner-border" role="status" style="color: var(--bs-primary); width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+
+          <!-- Sin resultados -->
+          <div *ngIf="!data.loading?.list && (!data.products || data.products.length === 0)" class="no-products-message">
+            <i class="bi bi-search"></i>
+            <h3>No se encontraron productos</h3>
+            <p>Intenta modificar los filtros o usar otros términos de búsqueda para encontrar lo que buscas.</p>
+          </div>
+
+          <!-- Grid de productos -->
+          <div *ngIf="!data.loading?.list && data.products && data.products.length > 0">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+              <div class="col mb-4" *ngFor="let product of data.products">
+                <app-product-card [product]="product"></app-product-card>
+              </div>
+            </div>
+
+            <!-- Paginación -->
+            <div *ngIf="data.pagination && data.pagination.totalPages > 1" class="pagination-container mt-4">
+              <div class="pagination-info text-center text-muted mb-3">
+                <span *ngIf="data.products && data.pagination.total">
+                  Mostrando {{ (data.pagination.currentPage - 1) * data.pagination.limit + 1 }} - {{ (data.pagination.currentPage - 1) * data.pagination.limit + data.products.length }} de {{ data.pagination.total }} productos
+                </span>
+              </div>
+              <div class="d-flex justify-content-center">
+              <div class="pagination-controls">
+                <button class="pagination-arrow" (click)="onPageChange(data.pagination.currentPage - 1)" [disabled]="data.pagination.currentPage === 1">
+                  <lucide-icon name="chevron-left" size="20"></lucide-icon>
+                </button>
+
+                <div class="page-numbers">
+                  <button class="page-number" *ngFor="let pageNum of getPageNumbers(data.pagination.currentPage, data.pagination.totalPages)" 
+                          (click)="onPageChange(pageNum)" 
+                          [class.active]="pageNum === data.pagination.currentPage">
+                    {{ pageNum }}
+                  </button>
+                </div>
+
+                <button class="pagination-arrow" (click)="onPageChange(data.pagination.currentPage + 1)" [disabled]="data.pagination.currentPage === data.pagination.totalPages">
+                  <lucide-icon name="chevron-right" size="20"></lucide-icon>
+                </button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </ng-container>
+
+<!-- Offcanvas para filtros -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+  <div class="offcanvas-header border-bottom">
+    <div class="filter-header mb-0">
+      <h5>
+        <lucide-icon name="sliders-horizontal" size="18"></lucide-icon>
+        Filtros
+      </h5>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="catalog-filters-compact d-flex flex-column h-100">
+      <!-- Sistema de acordeón para filtros -->
+      <div class="accordion filter-accordion flex-grow-1" id="filterAccordionOffcanvas">
+        <!-- Categorías -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#categoriesCollapseOffcanvas" aria-expanded="true" aria-controls="categoriesCollapseOffcanvas">
+              Categorías
+            </button>
+          </h2>
+          <div id="categoriesCollapseOffcanvas" class="accordion-collapse collapse show" data-bs-parent="#filterAccordionOffcanvas">
+            <div class="accordion-body p-2">
+              <div class="filter-item-container">
+                <div *ngFor="let category of categories" class="filter-check-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [id]="'category-offcanvas-' + category.categoria"
+                      [checked]="selectedCategories.includes(category.categoria)"
+                      (change)="toggleCategory(category.categoria)">
+                    <label class="form-check-label text-truncate" [for]="'category-offcanvas-' + category.categoria" title="{{ category.categoria }}">
+                      <span>{{ category.categoria }}</span>
+                      <span class="category-count" *ngIf="category.count >= 0">{{ category.count }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Aquí se pueden añadir más filtros -->
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="offcanvas-footer mt-auto pt-3 border-top">
+        <button class="btn btn-primary w-100 mb-2" data-bs-dismiss="offcanvas" (click)="applyFilters()">Aplicar Filtros</button>
+        <button class="reset-filter w-100" (click)="resetFilters()" *ngIf="(searchControl.value || '').trim() !== '' || selectedCategories.length > 0">
+          <lucide-icon name="rotate-cw" size="16"></lucide-icon>
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+</div>

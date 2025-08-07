@@ -1,0 +1,157 @@
+// Elegant & Responsive Dashboard Styles
+
+// 1. Design Tokens
+$primary-color: #ffc107; // Melarium Yellow
+$header-bg: #ffffff;
+$content-bg: #f8f9fa;
+$text-dark: #212529;
+$text-light: #495057;
+$border-color: #dee2e6;
+$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$transition: all 0.3s ease-in-out;
+$breakpoint-md: 768px;
+
+// 2. Base Layout
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $content-bg;
+}
+
+// 3. Header
+.admin-header {
+  background-color: $header-bg;
+  box-shadow: $shadow;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+  }
+
+  .logo-container .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre imagen y texto */
+    text-decoration: none;
+
+    img {
+      height: 40px; /* Altura del logo */
+      width: auto;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $text-dark;
+      margin: 0;
+    }
+  }
+}
+
+// 4. Navigation
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  a {
+    color: $text-light;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: $transition;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: $primary-color;
+      transition: width 0.3s ease;
+    }
+
+    &:hover, &.active-link {
+      color: $text-dark;
+    }
+
+    &.active-link::after {
+      width: 100%;
+    }
+  }
+
+  .logout-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    .logout-text {
+      display: inline;
+    }
+  }
+}
+
+// 5. Mobile Menu Toggle
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $text-dark;
+}
+
+// 6. Content Area
+.admin-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+// 7. Responsive Design
+@media (max-width: $breakpoint-md) {
+  .admin-header {
+    padding: 0 1rem;
+  }
+
+  .menu-toggle {
+    display: block;
+    z-index: 1001; // Ensure it's above the nav
+  }
+
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: -100%; // Start off-screen
+    width: 250px;
+    height: 100vh;
+    background-color: $header-bg;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 6rem 2rem 2rem;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: right 0.3s ease-in-out;
+    gap: 1.5rem;
+
+    &.is-open {
+      right: 0;
+    }
+    
+    .logout-link .logout-text {
+      display: inline; // Always show text on mobile nav
+    }
+  }
+}

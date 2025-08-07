@@ -1,0 +1,18 @@
+// ========================================
+// ÍNDICE DE COMPONENTES
+// ========================================
+
+// Importar variables globales y compatibilidad primero
+@import "../variables";
+@import "../_compatibility";
+
+// Importar todos los componentes
+@import "./buttons";
+@import "./cards";
+@import "./forms";
+@import "./tables";
+@import "./modals";
+@import "./navigation";
+@import "./spinners";
+@import "./alerts";
+@import "./search";

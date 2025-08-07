@@ -1,0 +1,574 @@
+// Variables
+$primary-color: #f2a104; // Dorado miel
+$secondary-color: #5c3711; // Marrón oscuro
+$accent-color: #e67e22; // Color de acento naranja más intenso
+$background-color: #fcfaf7; // Crema muy sutil
+$background-light: #fefbf6; // Crema más clara
+$text-color: #2b2118; // Marrón oscuro para texto
+$text-light: #8c7a69; // Marrón claro para texto secundario
+$border-radius: 8px;
+$box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+$transition-time: 0.3s;
+
+// Banner del catálogo
+.catalog-banner {
+  background: linear-gradient(135deg, rgba($accent-color, 0.7) 0%, rgba($secondary-color, 0.9) 100%), 
+  url('../../../../../assets/images/image.png') center/cover no-repeat;
+  color: white;
+  padding: 4rem 0 3.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, $primary-color, $accent-color, $primary-color);
+  }
+  
+  h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0.7rem;
+    letter-spacing: -0.5px;
+  }
+  
+  p {
+    font-size: 1.3rem;
+    max-width: 650px;
+    margin: 0 auto 1.5rem;
+    opacity: 0.95;
+    font-weight: 300;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Los estilos del search-container ahora son globales y se importan desde styles/components/_search.scss
+}
+
+// Filtros de sidebar
+.catalog-filters {
+  background-color: $background-light;
+  border-radius: $border-radius;
+  padding: 1.75rem;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.04);
+  position: relative;
+  border: 1px solid rgba($accent-color, 0.1);
+  
+  h4 {
+    font-weight: 700;
+    margin-bottom: 1.75rem;
+    color: $secondary-color;
+    position: relative;
+    padding-bottom: 1rem;
+    letter-spacing: 0.5px;
+    font-size: 1.35rem;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, $primary-color, $accent-color);
+      border-radius: 10px;
+    }
+  }
+  
+  .filter-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-color;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .form-check {
+    margin-bottom: 0.8rem;
+    transition: all 0.25s;
+    padding-left: 1.8rem;
+    
+    &:hover .form-check-label {
+      color: $primary-color;
+    }
+    
+    .form-check-input {
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-left: -1.8rem;
+      border: 2px solid rgba($text-light, 0.4);
+      
+      &:checked {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        border-color: $primary-color;
+      }
+    }
+    
+    .form-check-label {
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: $text-light;
+      transition: all 0.2s;
+      padding-top: 0.05rem;
+    }
+  }
+  
+
+  
+  .btn-outline-secondary {
+    border: 2px solid $accent-color;
+    color: $secondary-color;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    
+    &:hover {
+      background-color: $accent-color;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba($accent-color, 0.3);
+    }
+  }
+}
+
+// Versión compacta de filtros - REDISEÑO ELEGANTE
+.catalog-filters-compact {
+  background-color: #fff; // Fondo blanco limpio
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eef2f7;
+
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eef2f7;
+
+    h5 {
+      font-weight: 700;
+      color: $text-color;
+      font-size: 1.1rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .reset-filter {
+      background: none;
+      border: none;
+      color: $text-light;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: $primary-color;
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .filter-accordion {
+    .accordion-item {
+      border: none;
+      background-color: transparent;
+
+      .accordion-header {
+        margin-bottom: 0;
+      }
+
+      .accordion-button {
+        font-size: 1rem;
+        font-weight: 600;
+        color: $text-color;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0.85rem 0.25rem;
+        width: 100%;
+        text-align: left;
+        
+        &:not(.collapsed) {
+          color: $primary-color;
+        }
+
+        &::after {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232b2118' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+          transition: transform 0.3s ease;
+        }
+        &:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f2a104' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+            transform: rotate(-180deg);
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      .accordion-body {
+        padding: 0 0.25rem 1rem;
+      }
+    }
+  }
+
+  .filter-item-container {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem; // Espacio para el scrollbar
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #e0e0e0; 
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #ccc; 
+    }
+
+    .form-check {
+      margin-bottom: 0.75rem;
+      padding-left: 2rem;
+      display: flex;
+      align-items: center;
+      
+      .form-check-input {
+        width: 1.15em;
+        height: 1.15em;
+        margin-top: 0;
+        margin-left: -2rem;
+        border: 2px solid #ced4da;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:checked {
+          background-color: $primary-color;
+          border-color: $primary-color;
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.2);
+          border-color: $primary-color;
+        }
+      }
+
+      .form-check-label {
+        color: $text-light;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+        cursor: pointer;
+        padding-top: 2px;
+
+        &:hover {
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  .applied-filters-count {
+    background-color: rgba($primary-color, 0.1);
+    border-radius: 6px;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: $primary-color;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+}
+
+// Encabezados de categorías
+.category-header {
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+  position: relative;
+  
+  &:first-of-type {
+    margin-top: 0;
+  }
+  
+  .category-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: $secondary-color;
+    white-space: nowrap;
+    position: relative;
+    padding-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 35px;
+      height: 3px;
+      background-color: $accent-color;
+      border-radius: 3px;
+    }
+  }
+  
+  .category-line {
+    height: 2px;
+    background: linear-gradient(to right, rgba($primary-color, 0.7), rgba($primary-color, 0.05));
+    margin-left: 1.5rem;
+  }
+}
+
+// Paginación
+.pagination-container {
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+}
+
+.pagination {
+  .page-item {
+    margin: 0 3px;
+    
+    &.active .page-link {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      box-shadow: 0 5px 10px rgba($primary-color, 0.3);
+      font-weight: 600;
+    }
+    
+    &.disabled .page-link {
+      color: rgba($text-light, 0.5);
+    }
+    
+    .page-link {
+      color: $secondary-color;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba($text-light, 0.2);
+      font-weight: 500;
+      transition: all 0.3s;
+      
+      &:hover {
+        background-color: $background-light;
+        color: $primary-color;
+        border-color: rgba($primary-color, 0.3);
+        transform: translateY(-2px);
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.15);
+      }
+    }
+  }
+}
+
+// Estado vacío
+.no-products-message {
+  padding: 4rem 0;
+  text-align: center;
+  background-color: $background-light;
+  border-radius: $border-radius;
+  border: 1px dashed rgba($text-light, 0.3);
+  
+  i {
+    color: rgba($primary-color, 0.3);
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  h3 {
+    color: $text-color;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: $text-light;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+/* === Elegant Pagination Styles === */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+
+  .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .page-number,
+  .pagination-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba($text-light, 0.2);
+    background-color: #fff;
+    color: $text-color;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background-color: $background-light;
+      border-color: rgba($primary-color, 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 5px 10px rgba($primary-color, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      background-color: #f8f9fa;
+    }
+  }
+
+  .pagination-arrow {
+    color: $text-light;
+
+    &:hover:not(:disabled) {
+      color: $primary-color;
+    }
+  }
+}
+
+// Media queries
+@media (max-width: 991.98px) {
+  .catalog-banner {
+    padding: 3rem 0 2.5rem;
+    
+    h1 {
+      font-size: 2.6rem;
+    }
+    
+    p {
+      font-size: 1.1rem;
+    }
+    
+    .search-container .form-control,
+    .search-container .btn {
+      padding: 0.85rem 1.25rem;
+    }
+  }
+  
+  .product-card .product-image-container {
+    height: 200px;
+  }
+  
+  .catalog-filters {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .catalog-banner {
+    padding: 2.5rem 0;
+    
+    h1 {
+      font-size: 2.2rem;
+    }
+  }
+  
+  .category-header {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    
+    .category-title {
+      font-size: 1.4rem;
+    }
+  }
+  
+  .product-card {
+    margin-bottom: 1.5rem;
+    
+    .product-image-container {
+      height: 180px;
+    }
+    
+    .product-info {
+      padding: 1.25rem;
+    }
+  }
+  
+  .pagination .page-item .page-link {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .catalog-banner {
+    padding: 2rem 0;
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    p {
+      font-size: 0.95rem;
+    }
+    
+    .search-container {
+      .form-control {
+        font-size: 0.95rem;
+      }
+      
+      .btn {
+        padding: 0.85rem 1rem;
+      }
+    }
+  }
+  
+  .product-card .product-image-container {
+    height: 160px;
+  }
+}

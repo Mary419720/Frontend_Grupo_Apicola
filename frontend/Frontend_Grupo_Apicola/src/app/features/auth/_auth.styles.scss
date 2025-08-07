@@ -1,0 +1,149 @@
+// Variables de color (tonos miel y grises para un look elegante)
+$primary-color: #ffab00; // Un dorado/ámbar vibrante
+$secondary-color: #333; // Gris oscuro para texto
+$background-color: #f9f9f9; // Un fondo muy claro, casi blanco
+$border-color: #ddd;
+$error-color: #d32f2f;
+$success-color: #388e3c;
+
+// Mixin para centrar elementos con flexbox
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  @include flex-center;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $background-color;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.auth-header {
+  margin-bottom: 30px;
+
+  img {
+    max-width: 80px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    color: $secondary-color;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.auth-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: $error-color;
+    }
+  }
+}
+
+.error-message {
+  color: $error-color;
+  font-size: 0.875rem;
+  margin-top: 6px;
+  text-align: left;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: lighten($border-color, 5%);
+    cursor: not-allowed;
+  }
+}
+
+.switch-auth-link {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: #555;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.global-error, .global-success {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.global-error {
+  background-color: rgba($error-color, 0.1);
+  color: $error-color;
+  border: 1px solid rgba($error-color, 0.2);
+}
+
+.global-success {
+  background-color: rgba($success-color, 0.1);
+  color: $success-color;
+  border: 1px solid rgba($success-color, 0.2);
+}

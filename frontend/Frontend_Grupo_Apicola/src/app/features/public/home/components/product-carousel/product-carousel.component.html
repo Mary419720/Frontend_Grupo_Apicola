@@ -1,0 +1,29 @@
+<section class="carousel-section">
+  <div class="carousel-header">
+    <div class="header-text">
+      <h2>{{ currentCategory?.nombre }}</h2>
+      <p>Descubre la pasión de cada producto</p>
+      <a href="javascript:void(0)" (click)="goToCatalog()" class="see-more">ver mas...</a>
+    </div>
+    <div class="carousel-navigation">
+      <button class="nav-button prev" (click)="prevCategory()">&lt;</button>
+      <button class="nav-button next" (click)="nextCategory()">&gt;</button>
+    </div>
+  </div>
+
+  <div class="carousel-container" #carousel>
+    <div *ngIf="loadingProducts()" class="state-container">
+      <app-spinner></app-spinner>
+    </div>
+
+    <div *ngIf="!loadingProducts() && products().length === 0" class="state-container">
+      <p>No hay productos disponibles en esta categoría.</p>
+    </div>
+
+    <app-product-card
+      *ngFor="let product of products()"
+      [product]="product"
+      [style.display]="loadingProducts() || products().length === 0 ? 'none' : 'block'"
+    ></app-product-card>
+  </div>
+</section>

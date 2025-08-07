@@ -1,0 +1,8 @@
+<ng-container *ngIf="showLayout$ | async">
+  <app-header />
+</ng-container>
+
+<main class="main-content">
+  <router-outlet />
+  <app-footer *ngIf="showLayout$ | async"></app-footer>
+</main>

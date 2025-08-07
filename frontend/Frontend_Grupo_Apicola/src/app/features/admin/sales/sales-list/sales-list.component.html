@@ -1,0 +1,65 @@
+<div class="sales-list-container">
+  <div class="list-header">
+    <h2>Listado de Ventas</h2>
+    <div class="header-actions">
+      <button *ngIf="isAdmin" (click)="exportToExcel()" class="btn btn-secondary" [disabled]="isExporting">
+        <lucide-icon [name]="isExporting ? 'loader' : 'download'" [class.spin]="isExporting" size="18"></lucide-icon>
+        <span>{{ isExporting ? 'Exportando...' : 'Descargar Excel' }}</span>
+      </button>
+      <button routerLink="/admin/sales/new" class="btn btn-primary">
+        <lucide-icon name="plus-circle" size="18"></lucide-icon>
+        <span>Registrar Nueva Venta</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="alert-message info">Cargando listado de ventas...</div>
+
+  <div *ngIf="errorLoading && !isLoading" class="alert-message danger">
+    Error al cargar el listado de ventas.
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && sales.length === 0" class="alert-message warning">
+    No hay ventas registradas por el momento.
+  </div>
+
+  <div *ngIf="!isLoading && !errorLoading && sales.length > 0">
+    <table class="sales-table">
+      <thead>
+        <tr>
+          <th>ID Venta</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th style="text-align: right;">Total</th>
+          <th>Estado</th>
+          <th style="text-align: center;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sale of sales">
+          <td><span class="sale-id">{{ sale._id?.slice(-8) }}</span></td>
+          <td>{{ sale.fecha | date:'dd/MM/yyyy' }}</td>
+          <td><span class="client-name">{{ sale.cliente.nombre }}</span></td>
+          <td style="text-align: right; font-weight: 500;">{{ sale.totales.total | currency:sale.totales.moneda:'symbol':'1.2-2' }}</td>
+          <td>
+            <span class="status-badge" 
+                  [ngClass]="{
+                    'status-completed': (sale.estado || '').toLowerCase() === 'completado',
+                    'status-pending': (sale.estado || '').toLowerCase() === 'pendiente',
+                    'status-cancelled': (sale.estado || '').toLowerCase() === 'cancelado',
+                    'status-default': !['completado', 'pendiente', 'cancelado'].includes((sale.estado || '').toLowerCase())
+                  }">
+              {{ sale.estado || 'Indefinido' }}
+            </span>
+          </td>
+          <td style="text-align: center;">
+            <button class="action-button" (click)="goToDetail(sale?._id)" title="Ver detalle" [disabled]="!sale?._id">
+              <lucide-icon name="eye" size="20"></lucide-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

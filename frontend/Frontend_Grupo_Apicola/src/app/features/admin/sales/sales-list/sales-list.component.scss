@@ -1,0 +1,227 @@
+// Se importa el archivo de variables globales de la aplicación.
+@import '../../../../../styles/variables';
+
+// Main container for the sales list view
+.sales-list-container {
+  background-color: $white;
+  padding: 2.5rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Header section with title and button
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid $medium-gray;
+  padding-bottom: 1.5rem;
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    color: $secondary-color;
+    font-size: 2.5rem;
+    margin: 0;
+  }
+}
+
+// General button styling
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: $secondary-color;
+  &:hover:not(:disabled) {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.btn-secondary {
+  background-color: $secondary-color;
+  color: $white;
+  border: 1px solid $secondary-color;
+
+  &:hover:not(:disabled) {
+    background-color: darken($secondary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: lighten($secondary-color, 20%);
+    cursor: wait;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+// Table styling
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+
+  thead {
+    tr {
+      th {
+        background-color: $light-gray;
+        color: $dark-gray-text;
+        font-weight: 600;
+        text-align: left;
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $medium-gray;
+      transition: background-color 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #fdf8e9; // A very light yellow for hover
+      }
+
+      td {
+        padding: 1rem 1.25rem;
+        vertical-align: middle;
+        color: $secondary-color;
+
+        .client-name {
+          font-weight: 500;
+        }
+
+        .sale-id {
+          font-family: 'monospace';
+          font-size: 0.9rem;
+          color: #888;
+        }
+      }
+    }
+  }
+}
+
+// Status badge styling
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+
+  &.status-completed {
+    background-color: #d4edda; // Light green
+    color: #155724;
+  }
+  &.status-pending {
+    background-color: #fff3cd; // Light yellow
+    color: #856404;
+  }
+  &.status-cancelled {
+    background-color: #f8d7da; // Light red
+    color: #721c24;
+  }
+  &.status-default {
+    background-color: $medium-gray;
+    color: $dark-gray-text;
+  }
+}
+
+// Action buttons in table
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: $dark-gray-text;
+  transition: color 0.2s, transform 0.2s;
+
+  &:hover:not(:disabled) {
+    color: $primary-color;
+    transform: scale(1.2);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  lucide-icon {
+    display: block; // Ensures proper alignment
+  }
+}
+
+// Alert messages for loading/error/empty states
+.alert-message {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+  border-radius: $border-radius;
+  font-size: 1.1rem;
+
+  &.info {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+  &.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  &.warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .sales-table {
+    display: block;
+    overflow-x: auto; // Allow horizontal scrolling for the table
+  }
+}

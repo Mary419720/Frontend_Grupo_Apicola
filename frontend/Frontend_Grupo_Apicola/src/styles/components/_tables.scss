@@ -1,0 +1,234 @@
+// ========================================
+// ESTILOS DE TABLAS
+// ========================================
+@import "../variables";
+
+// Tabla base
+.table {
+  width: 100%;
+  margin-bottom: $spacing-6;
+  color: $text-color;
+  border-collapse: collapse;
+  
+  // Celdas
+  th, td {
+    padding: $table-cell-padding-y $table-cell-padding-x;
+    vertical-align: middle;
+    border-top: $border-width solid $table-border-color;
+    text-align: left;
+  }
+
+  // Encabezados
+  thead {
+    th {
+      background-color: $table-head-bg;
+      color: $table-head-color;
+      font-weight: $font-weight-semibold;
+      border-bottom: $border-width-md solid $primary-color;
+      vertical-align: bottom;
+      white-space: nowrap;
+      padding-top: $spacing-3;
+      padding-bottom: $spacing-3;
+      
+      // Ordenamiento
+      &.sortable {
+        cursor: pointer;
+        position: relative;
+        padding-right: $spacing-8;
+        
+        &::after {
+          content: "↕";
+          position: absolute;
+          right: $spacing-3;
+          color: rgba($secondary-color, 0.5);
+        }
+        
+        &.asc::after {
+          content: "↑";
+          color: $secondary-color;
+        }
+        
+        &.desc::after {
+          content: "↓";
+          color: $secondary-color;
+        }
+        
+        &:hover {
+          background-color: rgba($primary-color, 0.15);
+        }
+      }
+    }
+  }
+  
+  // Cuerpo de la tabla
+  tbody {
+    tr {
+      transition: background-color $transition-base;
+      
+      &:nth-of-type(even) {
+        background-color: $table-stripe-color;
+      }
+      
+      &:hover {
+        background-color: $table-hover-color;
+      }
+    }
+  }
+  
+  // Pie de tabla
+  tfoot {
+    th, td {
+      border-top: $border-width-md solid $table-border-color;
+      background-color: rgba($primary-color, 0.05);
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+// Tabla con bordes
+.table-bordered {
+  border: $border-width solid $table-border-color;
+  
+  th, td {
+    border: $border-width solid $table-border-color;
+  }
+}
+
+// Tabla sin bordes
+.table-borderless {
+  th, td, thead th, tbody + tbody {
+    border: 0;
+  }
+}
+
+// Tabla compacta
+.table-sm {
+  th, td {
+    padding: $spacing-1 $spacing-2;
+  }
+}
+
+// Tabla con filas resaltadas
+.table-hover {
+  tbody tr {
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+    }
+  }
+}
+
+// Variantes de tabla
+.table-primary {
+  --table-accent-bg: rgba($primary-color, 0.1);
+  --table-accent-color: $secondary-color;
+  
+  thead th {
+    background-color: rgba($primary-color, 0.2);
+    color: $secondary-color;
+  }
+  
+  tbody tr {
+    &:nth-of-type(even) {
+      background-color: var(--table-accent-bg);
+      color: var(--table-accent-color);
+    }
+  }
+}
+
+.table-secondary {
+  --table-accent-bg: rgba($secondary-color, 0.05);
+  --table-accent-color: $secondary-color;
+  
+  thead th {
+    background-color: rgba($secondary-color, 0.1);
+    color: $secondary-color;
+  }
+  
+  tbody tr {
+    &:nth-of-type(even) {
+      background-color: var(--table-accent-bg);
+      color: var(--table-accent-color);
+    }
+  }
+}
+
+// Contenedor de tabla con scroll horizontal
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  
+  .table {
+    margin-bottom: 0;
+  }
+  
+  // Añadir un efecto de sombra para indicar scroll
+  &.has-scroll {
+    background: 
+      linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)),
+      linear-gradient(to left, white 30%, rgba(255, 255, 255, 0)) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 100% 0;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-attachment: local, local, scroll, scroll;
+  }
+}
+
+// Estilos para estados de filas
+tr.active {
+  background-color: rgba($primary-color, 0.15) !important;
+}
+
+tr.success {
+  background-color: rgba($success-color, 0.15) !important;
+  color: darken($success-color, 10%) !important;
+}
+
+tr.warning {
+  background-color: rgba($warning-color, 0.15) !important;
+  color: darken($warning-color, 15%) !important;
+}
+
+tr.danger {
+  background-color: rgba($danger-color, 0.15) !important;
+  color: darken($danger-color, 5%) !important;
+}
+
+// Badges para estado dentro de tablas
+.table-badge {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: $border-radius-pill;
+  
+  &.badge-success {
+    background-color: rgba($success-color, 0.15);
+    color: $success-color;
+  }
+  
+  &.badge-warning {
+    background-color: rgba($warning-color, 0.15);
+    color: darken($warning-color, 15%);
+  }
+  
+  &.badge-danger {
+    background-color: rgba($danger-color, 0.15);
+    color: $danger-color;
+  }
+  
+  &.badge-info {
+    background-color: rgba($info-color, 0.15);
+    color: $info-color;
+  }
+}

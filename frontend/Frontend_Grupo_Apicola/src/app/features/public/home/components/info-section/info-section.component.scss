@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+.info-section {
+  padding: 4rem 0;
+}
+
+.info-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+
+  // Estilo por defecto (imagen a la derecha)
+  .text-content {
+    flex: 1;
+    order: 1;
+  }
+
+  .image-content {
+    flex: 1;
+    order: 2;
+  }
+
+  // Modificador para cuando la imagen está a la izquierda
+  &.image-left {
+    .text-content {
+      order: 2;
+    }
+    .image-content {
+      order: 1;
+    }
+  }
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+  }
+}
+
+.image-content {
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .info-container {
+    flex-direction: column;
+    text-align: center;
+
+    &.image-left {
+      .text-content,
+      .image-content {
+        order: 0; // Resetea el orden en móvil
+      }
+    }
+  }
+}

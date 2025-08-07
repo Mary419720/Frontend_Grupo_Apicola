@@ -1,0 +1,37 @@
+<div class="product-card" *ngIf="product">
+    <div class="product-image-container">
+    <a [routerLink]="['/products', product._id]">
+      <img [src]="getProductImage(product)" [alt]="product.nombre">
+    </a>
+    <!-- Botón de Favoritos -->
+    <button 
+      
+      (click)="toggleFavorite($event)" 
+      class="favorite-button"
+      [class.is-favorite]="isFavorite$ | async"
+      [attr.aria-label]="(isFavorite$ | async) ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+      [title]="(isFavorite$ | async) ? 'Quitar de favoritos' : 'Añadir a favoritos'">
+      <lucide-icon name="heart"></lucide-icon>
+    </button>
+  </div>
+  <div class="product-info">
+    <div class="product-content">
+      <div class="product-type">{{ product.tipo }}</div>
+      <h5 class="product-name">{{ product.nombre }}</h5>
+    </div>
+    
+    <div class="product-footer">
+      <p class="product-price" *ngIf="getMinMaxPrices(product) as prices">
+        <ng-container *ngIf="prices.min === prices.max; else priceRange">
+          {{ prices.min | currency:'MXN':'symbol-narrow' }}
+        </ng-container>
+        <ng-template #priceRange>
+          {{ prices.min | currency:'MXN':'symbol-narrow' }} - {{ prices.max | currency:'MXN':'symbol-narrow' }}
+        </ng-template>
+      </p>
+            <a [routerLink]="['/products', product._id]" class="details-button">
+        Ver detalles
+      </a>
+    </div>
+  </div>
+</div>

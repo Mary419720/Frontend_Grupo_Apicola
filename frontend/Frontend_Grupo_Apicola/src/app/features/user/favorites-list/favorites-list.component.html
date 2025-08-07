@@ -1,0 +1,28 @@
+<div class="favorites-container container my-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4">Mis Productos Favoritos</h1>
+    <p class="lead text-muted">Aquí encontrarás todos los productos que has guardado.</p>
+  </div>
+
+  <ng-container *ngIf="favoriteProducts$ | async as products; else loading">
+    <div *ngIf="products.length > 0; else emptyState" class="row gy-4">
+      <div *ngFor="let product of products" class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+        <app-product-card [product]="product" class="w-100"></app-product-card>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state text-center py-5">
+        <lucide-icon name="heart" size="64" class="text-muted mb-3"></lucide-icon>
+        <h2>Tu lista de favoritos está vacía</h2>
+        <p class="text-muted">Parece que aún no has añadido ningún producto. ¡Explora nuestro catálogo para encontrar algo que te encante!</p>
+        <a routerLink="/products" class="btn btn-primary mt-3">Ver Productos</a>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loading>
+    <!-- Opcional: Se puede mostrar un spinner de carga aquí -->
+    <p class="text-center">Cargando tus favoritos...</p>
+  </ng-template>
+</div>

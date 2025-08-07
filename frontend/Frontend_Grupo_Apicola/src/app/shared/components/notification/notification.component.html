@@ -1,0 +1,13 @@
+<div 
+  *ngIf="visible" 
+  [@notificationAnimation]="animationState"
+  [ngClass]="getNotificationClass()"
+>
+  <div class="notification-icon">{{ getIcon() }}</div>
+  <div class="notification-content">{{ message }}</div>
+  <button 
+    *ngIf="dismissible" 
+    class="notification-close" 
+    (click)="dismiss()"
+  >×</button>
+</div>

@@ -1,0 +1,169 @@
+<div class="container-fluid px-0">
+  
+  <!-- Contenido principal -->
+  <div class="container py-5">
+    <!-- Estado de carga -->
+    <div *ngIf="loading" class="d-flex justify-content-center my-5">
+      <div class="spinner-border" role="status" style="color: var(--bs-primary); width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="!loading && error" class="error-message text-center my-5">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <h3>Error al cargar el producto</h3>
+      <p>Lo sentimos, no se pudo cargar la información del producto solicitado.</p>
+      <a routerLink="/products" class="btn btn-outline-primary mt-3">Volver al catálogo</a>
+    </div>
+
+    <!-- Detalle del producto -->
+    <div *ngIf="!loading && !error && product" class="product-detail">
+      <div class="row g-4 g-lg-5 align-items-start">
+        <!-- Columna izquierda: Galería de imágenes -->
+        <div class="col-lg-6">
+          <div class="product-gallery">
+            <!-- Imagen principal -->
+            <div class="main-image-container">
+              <img [src]="mainImageUrl" alt="{{ product.nombre }}" class="main-image img-fluid">
+              <span *ngIf="isNewProduct(product)" class="product-badge">Nuevo</span>
+            </div>
+
+            <!-- Miniaturas -->
+            <div *ngIf="product.imagenes && product.imagenes.length > 1" class="thumbnails-container mt-3">
+              <div class="row g-2">
+                <div *ngFor="let image of product.imagenes; let i = index" class="col-3">
+                  <div class="thumbnail" [class.active]="i === currentImageIndex" 
+                       (click)="changeMainImage(image, i)">
+                    <img [src]="getFullImageUrl(image)" alt="Miniatura {{ i + 1 }}" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Columna derecha: Información del producto -->
+        <div class="col-lg-6">
+          <div class="product-info">
+            <!-- Encabezado -->
+            <div class="category-tag" *ngIf="product.atributos?.categoria_original">
+              {{ product.atributos?.categoria_original }}
+            </div>
+            <h1 class="product-title">{{ product.nombre }}</h1>
+            <div class="product-meta">
+              <span class="product-code">Código: {{ product.codigo }}</span>
+              <span class="product-type">Tipo: {{ product.tipo }}</span>
+            </div>
+
+            <!-- Precios -->
+            <div *ngIf="getPriceRange() as prices" class="product-price-section">
+              <h2 class="product-price" *ngIf="prices.min === prices.max">
+                {{ prices.min | currency }}
+              </h2>
+              <h2 class="product-price" *ngIf="prices.min !== prices.max">
+                {{ prices.min | currency }} - {{ prices.max | currency }}
+              </h2>
+              <p class="price-note">Precio varía según presentación</p>
+            </div>
+
+            <!-- Descripción -->
+            <div class="product-description">
+              <h3>Descripción</h3>
+              <p [innerHTML]="product.descripcion"></p>
+            </div>
+
+            <!-- Botón de Favoritos -->
+            <div class="favorite-section mt-4">
+              <button class="btn btn-favorite" (click)="toggleFavorite()">
+                <lucide-icon name="heart" [class.is-favorite]="isFavorite"></lucide-icon>
+                <span>{{ isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' }}</span>
+              </button>
+            </div>
+
+            <!-- Estado físico -->
+            <div *ngIf="product.estado_fisico" class="product-extra-info">
+              <p><strong>Estado físico:</strong> {{ product.estado_fisico }}</p>
+            </div>
+
+            <!-- Compartir -->
+            <div class="share-section">
+              <p>Compartir:</p>
+              <div class="share-buttons">
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ encodedUrl }}" target="_blank" class="share-btn facebook">
+                  <lucide-icon name="facebook"></lucide-icon>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ encodedUrl }}" target="_blank" class="share-btn twitter">
+                  <lucide-icon name="twitter"></lucide-icon>
+                </a>
+                <a href="https://wa.me/?text={{ product.nombre }} {{ encodedUrl }}" target="_blank" class="share-btn whatsapp">
+                  <lucide-icon name="whatsapp"></lucide-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de presentaciones del producto -->
+      <div class="product-presentations mt-5">
+        <h3 class="section-title">Presentaciones disponibles</h3>
+        <div class="table-responsive">
+          <table class="table table-hover presentation-table">
+            <thead>
+              <tr>
+                <th>Formato</th>
+                <th>Capacidad</th>
+                <th>Precio</th>
+                <th>Disponibilidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let presentation of product.presentaciones">
+                <td>{{ presentation.formato }}</td>
+                <td>{{ presentation.capacidad }}</td>
+                <td>{{ presentation.precio_venta | currency }}</td>
+                <td>
+                  <span class="stock-badge" [class.in-stock]="presentation.stock > 0" [class.out-of-stock]="presentation.stock <= 0">
+                    {{ presentation.stock > 0 ? 'Disponible' : 'Agotado' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Productos relacionados -->
+      <div *ngIf="relatedProducts.length > 0" class="related-products mt-5">
+        <h3 class="section-title">Productos relacionados</h3>
+        <div class="row g-4">
+          <div *ngFor="let relatedProduct of relatedProducts" class="col-md-6 col-lg-3">
+            <div class="product-card h-100" [routerLink]="['/products', relatedProduct.id]">
+              <div class="product-image-container">
+                <img [src]="getProductImage(relatedProduct)" alt="{{relatedProduct.nombre}}" class="product-image">
+                <span *ngIf="isNewProduct(relatedProduct)" class="product-badge">Nuevo</span>
+              </div>
+              <div class="product-info">
+                <div>
+                  <div class="product-type">{{relatedProduct.tipo}}</div>
+                  <h3 class="product-name">{{relatedProduct.nombre}}</h3>
+                </div>
+                <div class="price-container">
+                  <p class="product-price" *ngIf="getMinMaxPrices(relatedProduct) as prices">
+                    <ng-container *ngIf="prices.min === prices.max; else priceRange">
+                      {{prices.min | currency}}
+                    </ng-container>
+                    <ng-template #priceRange>
+                      {{prices.min | currency}} - {{prices.max | currency}}
+                    </ng-template>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
