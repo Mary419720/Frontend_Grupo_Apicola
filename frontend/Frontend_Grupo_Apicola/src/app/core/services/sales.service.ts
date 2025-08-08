@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ApiListResponse, ApiResponse } from '../models/api.model';
+import { IS_PUBLIC_API } from '../constants/api.constants';
 
 // Interfaces alineadas con el modelo del Backend
 export interface SaleProduct {
@@ -94,7 +95,9 @@ export class SalesService {
   exportSalesToExcel(): Observable<HttpResponse<Blob>> {
     return this.http.get(`${this.apiUrl}/export`, {
       observe: 'response', // Necesitamos observar la respuesta completa para obtener las cabeceras
-      responseType: 'blob'
+      responseType: 'blob',
+      // Aseguramos que el interceptor de autenticación añada el token a esta petición
+      context: new HttpContext().set(IS_PUBLIC_API, false)
     });
   }
 
