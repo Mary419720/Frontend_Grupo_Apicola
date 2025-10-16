@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3001/api',
+  apiUrl: 'https://backend-grupo-apicola-1.onrender.com/api',
   debugMode: true,            // Habilita características de depuración
   showDebugPanels: true,      // Muestra paneles de depuración (para desarrolladores)
   enableAdminOverride: true,  // Permite que todos los usuarios tengan acceso de administrador en desarrollo
