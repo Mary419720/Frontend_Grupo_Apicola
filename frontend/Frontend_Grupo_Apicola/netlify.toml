@@ -5,7 +5,7 @@
 
 [build]
   # Comando para construir la aplicación
-  command = "npm run build --configuration production"
+  command = "npm install --legacy-peer-deps && npm run build"
   
   # Directorio donde se generan los archivos compilados
   # Angular 17 genera en dist/melarium/browser
