@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiResponse } from '../models/api.model';
 import { environment } from 'src/environments/environment';
 
 export interface DashboardData {
@@ -11,7 +13,7 @@ export interface DashboardData {
   totalSales: number;
   newCustomers: number;
   totalProducts: number;
-  monthlyRevenueGrowth: number;
+  monthlyRevenueGrowth: string;
 }
 
 export type SalesPeriod = 'day'|'week'|'month'|'year';
@@ -31,7 +33,9 @@ export class DashboardService {
   constructor() { }
 
   getDashboardData(): Observable<DashboardData> {
-    return this.http.get<DashboardData>(`${this.apiUrl}/dashboard`);
+    return this.http.get<ApiResponse<DashboardData>>(`${this.apiUrl}/dashboard`).pipe(
+      map(response => response.data)
+    );
   }
 
   getSalesByPeriod(period: SalesPeriod): Observable<SalesPeriodData> {

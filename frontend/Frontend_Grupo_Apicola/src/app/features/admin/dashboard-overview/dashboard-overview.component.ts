@@ -210,8 +210,9 @@ export class DashboardOverviewComponent implements OnInit, OnDestroy {
       this.totalSales = data.totalSales;
       this.totalProducts = data.totalProducts;
       this.newCustomers = data.newCustomers;
-            const growth = data.monthlyRevenueGrowth || 0;
-      this.monthlyRevenueGrowth = `${growth > 0 ? '+' : ''}${growth}%`;
+
+      const growth = parseFloat(data.monthlyRevenueGrowth);
+      this.monthlyRevenueGrowth = `${growth >= 0 ? '+' : ''}${data.monthlyRevenueGrowth}%`;
 
       if (growth > 0) {
         this.revenueGrowthClass = 'positive';
