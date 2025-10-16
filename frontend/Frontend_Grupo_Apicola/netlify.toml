@@ -12,7 +12,7 @@
   publish = "dist/melarium/browser"
   
   # Directorio base del proyecto (si está en subdirectorio)
-  # base = "frontend/Frontend_Grupo_Apicola"
+  base = "frontend/Frontend_Grupo_Apicola"
 
 # ========================================
 # REDIRECTS Y REWRITES
