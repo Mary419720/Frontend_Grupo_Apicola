@@ -1,24 +1,20 @@
 # ========================================
 # CONFIGURACIÓN DE NETLIFY
-# Grupo Apícola - Frontend Angular
+# Proyecto Angular + Functions
 # ========================================
 
 [build]
-  # Comando para construir la aplicación
   command = "npm install --legacy-peer-deps && npm run build -- --configuration=production"
-  
-  # Directorio donde se generan los archivos compilados
-  # Angular 17 genera en dist/melarium/browser
   publish = "dist/melarium/browser"
-  
-  # Directorio base del proyecto (si está en subdirectorio)
-  base = "frontend/Frontend_Grupo_Apicola"
+  base = "."  # Netlify considera la carpeta actual como base (Frontend_Grupo_Apicola/)
+
+# Carpeta de funciones serverless
+[functions]
+  directory = "Functions"
 
 # ========================================
 # REDIRECTS Y REWRITES
 # ========================================
-# Redirige todas las rutas a index.html para que funcione el enrutamiento de Angular
-# Esto es CRÍTICO para que las rutas de Angular funcionen correctamente
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -31,32 +27,19 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # Seguridad contra XSS
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
-    
-    # Cache de assets estáticos
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Cache específico para index.html (no cachear)
 [[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 
 # ========================================
-# CONFIGURACIÓN DE BUILD
+# CONFIGURACIÓN DE NODE
 # ========================================
 [build.environment]
-  # Versión de Node.js (ajusta según tu package.json)
   NODE_VERSION = "18"
-  
-  # Aumentar memoria si es necesario para el build
   NODE_OPTIONS = "--max-old-space-size=4096"
-
-# ========================================
-# PLUGINS (Opcional)
-# ========================================
-# [[plugins]]
-#   package = "@netlify/plugin-lighthouse"
